@@ -28,6 +28,8 @@ These are supported by numerical experiments on synthetic data. They are not the
 | At low polynomial degree (d < n-1), function class alone constrains f(0) | Degrees 2–3 show same ambiguity regardless of bounds | Only tested for one response |
 | Increasing n reduces ambiguity only when model degree is fixed (overdetermined regime) | Fixed d=2: ambiguity 0.14→0.04 as n goes 3→7 | Single response, polynomial class only |
 | In the interpolation regime d = n-1, ambiguity grows with n | d=n-1: ambiguity 0.14→2.54 as n goes 3→7 | Specific to evenly-spaced scales and exponential response |
+| Bias–ambiguity tradeoff: lower degree reduces ambiguity but increases misspecification bias | n=7: d=2 has bias 0.035/ambiguity 0.04; d=6 has bias 0.000/ambiguity 2.54 | Single exponential response, noiseless, no proof of optimal selection |
+| Higher degree reduces bias but increases ambiguity | Monotone in both directions across d=2..6 for this response | No proof this holds for all responses |
 
 ---
 

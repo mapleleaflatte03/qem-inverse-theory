@@ -17,23 +17,24 @@
 - [x] Ambiguity diameter vs polynomial degree
 - [x] Ambiguity diameter vs tolerance δ
 - [x] Ambiguity diameter vs number of scale factors n
+- [x] Bias–ambiguity tradeoff for fixed-degree misspecified models
 - [ ] Ambiguity diameter for non-polynomial function classes (exponential)
 - [ ] Multiple response functions (not just single exponential)
 - [ ] Connect δ to shot budget: δ = z_{α/2} · σ_max
-- [ ] Bias–ambiguity tradeoff for fixed-degree misspecified models
 
-## Week 3: Literature Verification + BibTeX
+## Week 3: Literature Verification + BibTeX + Figures
 
 - [ ] Verify all VERIFY-marked citations against arXiv/DOI
 - [ ] Convert literature.md to refs.bib
 - [ ] Read and summarize Takagi2022 and Quek2024 proof techniques
 - [ ] Identify exactly which assumptions in lower-bound proofs might fail for structured problems
 - [ ] Add any missing relevant citations found during verification
+- [x] Generate paper figures (ambiguity degree sweep, δ sensitivity, n sensitivity, bias-ambiguity)
 
 ## Week 4: LaTeX Manuscript Skeleton
 
-- [ ] Convert draft.md sections 1–5 to LaTeX
-- [ ] Add proper theorem/proof environments
+- [x] Convert draft.md sections 1–5 to LaTeX skeleton
+- [ ] Add proper theorem/proof environments with full proofs
 - [ ] Include ambiguity diameter figures (matplotlib → PDF)
 - [ ] Write Discussion and Limitations section
 - [ ] Internal review: check every claim against claim_ledger.md

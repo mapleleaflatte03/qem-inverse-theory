@@ -187,7 +187,29 @@ In this synthetic setup, the contrast is clear: in the interpolation regime, amb
 
 **Caveat:** Fixed-degree models reduce ambiguity but may introduce misspecification bias. A degree-2 polynomial cannot exactly represent an exponential response, so the "identified" value may be biased. The ambiguity diameter measures the range of *consistent* values, not the accuracy of the best estimate. The bias–ambiguity tradeoff is an important open question.
 
-### 5.5 Key observations
+### 5.5 Bias–ambiguity tradeoff
+
+The n-sensitivity results reveal a fundamental tension. We quantify it by computing both the ambiguity diameter and the misspecification bias (noiseless least-squares polynomial estimate minus true $f(0)$) for each degree.
+
+**Results ($n = 7$, $\delta = 0.01$, probability bounds $[0, 1]$):**
+
+| $d$ | $|\mathrm{Bias}|$ | Ambiguity diameter |
+|-----|-------------------|--------------------|
+| 2   | 0.0353            | 0.0435             |
+| 3   | 0.0066            | 0.1172             |
+| 4   | 0.0011            | 0.2440             |
+| 5   | 0.0002            | 0.6800             |
+| 6   | 0.0000            | 2.5400             |
+
+The pattern is clear in this synthetic setup:
+- Lower degree tightly identifies $f(0)$ but to a *biased* value (the polynomial cannot represent the exponential response).
+- Higher degree reduces bias (better fit) but increases ambiguity (more consistent $f(0)$ values).
+
+**Key insight:** Identifiability alone is not accuracy. A model can tightly identify the wrong value if misspecified. Conversely, a flexible model may be unbiased but poorly identified.
+
+This motivates model selection as a necessary complement to physical constraints. The optimal degree balances bias against ambiguity — but depends on the unknown true response, which is the fundamental difficulty of model selection in ZNE. We do not claim that AICc or any specific criterion optimally resolves this tradeoff.
+
+### 5.6 Key observations
 
 1. **Physical bounds matter most in the high-uncertainty regime.** When data is precise ($\delta$ small), the function class alone constrains $f(0)$. When data is noisy ($\delta$ large), bounds become the dominant constraint.
 
