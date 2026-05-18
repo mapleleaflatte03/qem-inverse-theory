@@ -12,7 +12,7 @@ Zero-noise extrapolation (ZNE) is one of the most widely used quantum error miti
 
 ## 1. Introduction
 
-Zero-noise extrapolation mitigates errors on noisy quantum processors by measuring expectation values at multiple amplified noise levels and extrapolating to the zero-noise limit. Since its introduction [Li & Benjamin 2017, Temme et al. 2017], ZNE has become a common error mitigation strategy due to its simplicity: no knowledge of the noise model is required, only the ability to amplify noise controllably.
+Zero-noise extrapolation mitigates errors on noisy quantum processors by measuring expectation values at multiple amplified noise levels and extrapolating to the zero-noise limit. Since its introduction [LiBenjamin2017, Temme2017], ZNE has become a common error mitigation strategy due to its simplicity: no knowledge of the noise model is required, only the ability to amplify noise controllably.
 
 Despite widespread use, ZNE is typically treated as a curve-fitting exercise: choose a model (linear, polynomial, exponential), fit it to noisy data, and evaluate at zero noise. This framing obscures a fundamental question:
 
@@ -173,3 +173,26 @@ At $\delta = 0$ (exact data), the degree-4 polynomial is uniquely determined by 
 - **No hardware claims.** We make no claims about performance on real quantum processors.
 - **No proof that constrained estimators reduce MSE.** Propositions 1–2 establish identifiability and validity, not accuracy. Whether constrained optimization improves MSE over unconstrained estimation remains an open question.
 - **Single response function.** The ambiguity diameter results are for one specific exponential response. Generalization to other response classes is future work.
+
+---
+
+## References (to be formalized)
+
+Citation keys used in this draft:
+
+- [LiBenjamin2017]
+- [Temme2017]
+- [GiurgicaTiron2020]
+- [Cai2023]
+- [Takagi2022]
+- [Quek2024]
+- [Tsubouchi2023]
+- [Hadamard1902]
+- [Tikhonov1963]
+- [Hansen1998]
+- [Miranskyy2026]
+- [Boyd2004]
+- [Stuart2010]
+- [HurvichTsai1989]
+
+See `paper/literature.md` for full bibliographic details.
