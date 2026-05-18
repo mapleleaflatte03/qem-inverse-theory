@@ -1,66 +1,113 @@
 # Theorem Sketches
 
-These are informal statements to be made rigorous. Not yet proven.
+These are informal statements at various stages of rigor. Status labels:
+- **Proposition**: Formalizable and provable with standard techniques.
+- **Conjecture**: Believed true but proof not yet available.
+- **Research direction**: An open question, not a claim.
 
 ---
 
-## Theorem 1: Stability of Bounded Estimator
+## Proposition 1: Non-Identifiability Without Physical Assumptions
 
-**Statement (sketch):**
-Let f̂_B(0) be the bounded polynomial estimator of degree d with bounds [a, b].
-If the true response f ∈ P_d (polynomials of degree ≤ d) and f(0) ∈ [a, b], then:
+**Status:** Proposition (formalizable).
 
-    |f̂_B(0) - f(0)| ≤ κ_B · max_i |ε_i|
+**Statement:**
+For any observations $\mathbf{y} = (y_1, \ldots, y_n)$ at scale factors $\boldsymbol{\lambda}$, and any target value $t \in \mathbb{R}$, there exists a polynomial $g$ of degree $n$ such that $g(\lambda_i) = y_i$ for all $i$ and $g(0) = t$.
 
-where κ_B ≤ κ_U (the unconstrained condition number), with strict inequality when the unconstrained estimate violates bounds.
+**Consequence:** Without restricting the function class $\mathcal{F}$ or imposing physical constraints $\mathcal{C}$:
+$$\mathcal{A}(\mathbf{y}, \mathcal{P}_n, \mathbb{R}, 0) = \mathbb{R}$$
 
-**Proof idea:** The feasible set is a convex polytope. Projection onto a convex set is non-expansive. The bounded estimator is the projection of the unconstrained estimator onto [a, b] intersected with the least-squares manifold.
+The ambiguity set is all of $\mathbb{R}$. ZNE is completely undetermined.
+
+**Proof sketch:** The system $g(\lambda_i) = y_i$, $g(0) = t$ gives $n+1$ constraints on a degree-$n$ polynomial with $n+1$ coefficients. The Vandermonde matrix on $\{0, \lambda_1, \ldots, \lambda_n\}$ is invertible (distinct points), so a unique solution exists for any $t$. $\square$
+
+**Corollary:** Physical bounds $\mathcal{C} = [a, b]$ reduce the ambiguity set to:
+$$\mathcal{A}(\mathbf{y}, \mathcal{P}_n, [a,b], 0) \subseteq [a, b]$$
+which is a strict reduction from $\mathbb{R}$ but may still equal all of $[a,b]$.
 
 ---
 
-## Theorem 2: Non-Identifiability Without Physical Assumptions
+## Proposition 2: Spectral Projection Validity
 
-**Statement (sketch):**
-For any set of observations {(λ_i, y_i)}_{i=1}^n and any target value t ∈ ℝ, there exists a smooth function g with g(λ_i) = y_i for all i and g(0) = t.
+**Status:** Proposition (formalizable, elementary).
 
-**Proof idea:** Polynomial interpolation with n+1 free parameters (degree n) can match n data points and any prescribed value at 0. Without restricting the function class or imposing bounds, f(0) is completely undetermined.
+**Statement:**
+Let $O$ be a Hermitian observable with eigenvalues $\mu_1, \ldots, \mu_m$. For any quantum state $\rho$:
+$$\mu_{\min} \leq \mathrm{Tr}[\rho O] \leq \mu_{\max}$$
 
-**Corollary:** Physical bounds [a, b] reduce the ambiguity set to at most [a, b] ∩ {achievable values}, which may be a strict subset.
+**Consequence:** Any estimator $\hat{f}(0) \notin [\mu_{\min}, \mu_{\max}]$ is provably incorrect. Projection onto $[\mu_{\min}, \mu_{\max}]$ cannot increase error when the true value satisfies the bounds:
+$$|\mathrm{proj}_{[a,b]}(\hat{f}) - f(0)| \leq |\hat{f} - f(0)| \quad \text{for all } f(0) \in [a,b]$$
+
+**Proof sketch:** $\mathrm{Tr}[\rho O] = \sum_j p_j \mu_j$ with $p_j \geq 0$, $\sum p_j = 1$ (Born rule in eigenbasis). Convex combination of $\{\mu_j\}$ lies in $[\mu_{\min}, \mu_{\max}]$. Projection onto a convex set containing the target is non-expansive. $\square$
+
+---
+
+## Conjecture 1: Stability of Bounded Estimator
+
+**Status:** Conjecture (not yet proven; the proof sketch below has gaps).
+
+**Statement (informal):**
+Let $\hat{f}_B(0)$ be the bounded polynomial estimator (degree $d$, bounds $[a,b]$) and $\hat{f}_U(0)$ the unconstrained estimator. Then:
+$$\kappa_B(\mathbf{y}) \leq \kappa_U$$
+
+where $\kappa_B$ is the local sensitivity of the bounded estimator (see definitions.md §7) and $\kappa_U = \|\mathbf{w}\|_1$ is the unconstrained condition number.
+
+**Why this is not yet proven:**
+The bounded estimator is NOT the projection of the unconstrained estimate onto $[a,b]$. It solves a constrained least-squares problem with different KKT conditions. The non-expansiveness of projection applies to projecting a *point* onto a convex set, but the bounded estimator changes the entire fit (all coefficients), not just the intercept.
+
+**What would be needed:**
+- Sensitivity analysis of the KKT system for bounded least-squares
+- Characterization of when the bound constraint is active vs inactive
+- Possibly: the statement holds only when the constraint is active (the interesting case)
+
+**Partial result (provable):**
+If the bounded estimator is defined as $\hat{f}_B(0) = \mathrm{proj}_{[a,b]}(\hat{f}_U(0))$ (simple clipping), then $\kappa_B \leq \kappa_U$ trivially. But this is a weaker estimator than constrained optimization.
 
 ---
 
 ## Theorem 3: Finite-Shot Help/Harm Criterion
 
-**Statement (sketch):**
-Let MSE_raw = σ²/N (raw measurement MSE) and MSE_ZNE = κ² · σ²/N + bias²(d, f).
-ZNE helps (MSE_ZNE < MSE_raw) if and only if:
+**Status:** To be corrected (the original formulation had dimensional issues).
 
-    κ² < N · (1 - bias²(d, f) · N / σ²)
+**Corrected statement (see definitions.md §9):**
 
-For fixed bias, there exists a critical shot count N* below which ZNE always harms.
+For a well-specified polynomial model (zero bias) with uniform shot allocation:
 
-**Proof idea:** Direct comparison of MSE expressions. The condition number κ amplifies variance while extrapolation reduces bias. The tradeoff depends on N.
+ZNE helps if and only if:
+$$\kappa_U^2 \cdot \bar{\sigma}^2 < [f(\lambda_1) - f(0)]^2 + \sigma_1^2$$
 
----
+The critical total shot count below which ZNE harms is:
+$$N^* = \frac{n \cdot \kappa_U^2 \cdot v}{[f(\lambda_1) - f(0)]^2}$$
 
-## Theorem 4: Spectral Projection Validity
+where $v$ is the single-shot variance and $n$ is the number of scale factors.
 
-**Statement (sketch):**
-Let O be a Hermitian observable with eigenvalues in [λ_min, λ_max]. For any quantum state ρ:
-
-    λ_min ≤ Tr[ρO] ≤ λ_max
-
-Therefore, any estimator returning values outside [λ_min, λ_max] is provably wrong, and projection onto these bounds cannot increase error when the true value satisfies the bounds.
-
-**Proof idea:** Tr[ρO] = Σ_i p_i λ_i where p_i ≥ 0, Σ p_i = 1. This is a convex combination of eigenvalues, hence bounded by extremes.
+**Issues remaining:**
+- The well-specified assumption ($\mathrm{Bias}_{\mathrm{ZNE}} = 0$) is unrealistic. Real response functions are not exactly polynomial.
+- For misspecified models, the bias term depends on the unknown $f$, making the criterion non-computable from data alone.
+- A practical version would need an estimable upper bound on bias.
 
 ---
 
-## Conjecture 5: Structured Escape Hatch
+## Research Direction 5: Structured Escape Hatches
 
-**Statement (conjecture):**
-For circuits with depth D on n qubits with local noise of strength ε, if the observable O has support on k ≪ n qubits, then ZNE achieves MSE ≤ poly(k, D) · ε² / N with polynomial shot cost, evading the exponential lower bounds that apply to global observables.
+**Status:** Research direction (open question, not a claim).
 
-**Intuition:** Local observables are insensitive to noise on distant qubits. The effective dimension of the inverse problem scales with the observable's support, not the full system size.
+**Question:**
+Do there exist natural circuit/observable structures under which ZNE achieves polynomial sample cost, despite generic QEM lower bounds (Takagi et al. 2022, Quek et al. 2024) showing exponential cost for worst-case instances?
 
-**Status:** Unproven. Requires careful analysis of noise propagation through circuit structure.
+**Candidate structures:**
+- Local observables with support on $k \ll n$ qubits
+- Circuits with bounded depth $D$ and local noise
+- Observables commuting with a symmetry of the noise channel
+- Systems with spectral gap in the noise channel's transfer matrix
+
+**What is NOT claimed:**
+- We do not claim to have identified such a structure.
+- We do not claim polynomial cost is achievable.
+- We do not claim the lower bounds have loopholes.
+
+**What we aim to do:**
+- Identify the assumptions in existing lower bound proofs.
+- Construct candidate structured instances.
+- Test numerically whether these instances exhibit better-than-generic scaling.
+- If promising, attempt rigorous proof for specific cases.
