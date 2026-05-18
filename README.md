@@ -77,6 +77,15 @@ This is a constrained inverse problem. We study its well-posedness in the sense 
 
 Early research prototype. See [STATUS.md](STATUS.md).
 
+## Current Paper Status
+
+- LaTeX skeleton exists (`paper/main.tex`) with 7 sections, 2 proven propositions
+- 4 figures reproducible via `python experiments/generate_figures.py`
+- `refs.bib` scaffold with verified DOIs for key citations
+- All results are synthetic — no hardware claims
+- Not peer-reviewed; draft is work-in-progress
+- Claim safety enforced by automated tests
+
 ## Install
 
 ```bash
