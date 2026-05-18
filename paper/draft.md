@@ -6,13 +6,13 @@
 
 ## Abstract
 
-Zero-noise extrapolation (ZNE) is the most widely deployed quantum error mitigation technique, yet its theoretical foundations as an inference problem remain underdeveloped. We formalize ZNE as a constrained inverse problem: recovering an unobserved noiseless expectation value from finite, noisy measurements at amplified noise levels. We show that without function-class restrictions, the zero-noise limit is not identifiable from any finite set of observations (Proposition 1). We establish that spectral bounds from the observable's eigenvalues provide physically valid constraints that cannot increase estimation error (Proposition 2). We introduce the *ambiguity diameter* — the range of zero-noise values consistent with data, function class, and physical constraints — as a quantitative measure of identifiability. Synthetic experiments illustrate that physical bounds reduce ambiguity diameter by up to 6× in the high-uncertainty regime, with the reduction becoming more pronounced as measurement tolerance increases. These results do not prove that constrained estimators are universally superior; rather, they formalize the conditions under which extrapolation is well-posed and quantify the role of physical constraints in restoring identifiability.
+Zero-noise extrapolation (ZNE) is one of the most widely used quantum error mitigation techniques, yet its theoretical foundations as an inference problem remain underdeveloped. We formalize ZNE as a constrained inverse problem: recovering an unobserved noiseless expectation value from finite, noisy measurements at amplified noise levels. We show that without function-class restrictions, the zero-noise limit is not identifiable from any finite set of observations (Proposition 1). We establish that spectral bounds from the observable's eigenvalues provide physically valid constraints, and that post-hoc projection of a scalar estimate onto these bounds cannot increase error when the true value lies within the spectral interval (Proposition 2). We introduce the *ambiguity diameter* — the range of zero-noise values consistent with data, function class, and physical constraints — as a quantitative measure of identifiability. Synthetic experiments illustrate that physical bounds reduce ambiguity diameter by up to 6× in a degree-4 polynomial ambiguity experiment at tolerance δ = 0.1, with the reduction becoming more pronounced as measurement tolerance increases. All numerical results in this draft are synthetic and intended to illustrate the identifiability framework. These results do not prove that constrained estimators are universally superior; rather, they formalize the conditions under which extrapolation is well-posed and quantify the role of physical constraints in restoring identifiability.
 
 ---
 
 ## 1. Introduction
 
-Zero-noise extrapolation mitigates errors on noisy quantum processors by measuring expectation values at multiple amplified noise levels and extrapolating to the zero-noise limit. Since its introduction [Li & Benjamin 2017, Temme et al. 2017], ZNE has become the default error mitigation strategy due to its simplicity: no knowledge of the noise model is required, only the ability to amplify noise controllably.
+Zero-noise extrapolation mitigates errors on noisy quantum processors by measuring expectation values at multiple amplified noise levels and extrapolating to the zero-noise limit. Since its introduction [Li & Benjamin 2017, Temme et al. 2017], ZNE has become a common error mitigation strategy due to its simplicity: no knowledge of the noise model is required, only the ability to amplify noise controllably.
 
 Despite widespread use, ZNE is typically treated as a curve-fitting exercise: choose a model (linear, polynomial, exponential), fit it to noisy data, and evaluate at zero noise. This framing obscures a fundamental question:
 
@@ -99,17 +99,17 @@ $$\mu_{\min} \leq \mathrm{Tr}[\rho O] \leq \mu_{\max}$$
 
 *Proof.* In the eigenbasis of $O$: $\mathrm{Tr}[\rho O] = \sum_j \mu_j \langle e_j | \rho | e_j \rangle = \sum_j \mu_j p_j$ where $p_j \geq 0$ and $\sum_j p_j = 1$. A convex combination of real numbers lies within their range. $\square$
 
-### 4.2 Corollary: Projection cannot increase error
+### 4.2 Corollary: Post-hoc projection cannot increase error
 
-For any estimate $\hat{f}$ and true value $f(0) \in [\mu_{\min}, \mu_{\max}]$:
+For any scalar estimate $\hat{f}$ and true value $f(0) \in [\mu_{\min}, \mu_{\max}]$:
 $$|\mathrm{proj}_{[\mu_{\min}, \mu_{\max}]}(\hat{f}) - f(0)| \leq |\hat{f} - f(0)|$$
 
-This follows from non-expansiveness of projection onto a convex set containing the target.
+This follows from non-expansiveness of projection onto a convex set containing the target. Note: this applies to clipping a scalar estimate after computation. It does not imply that constrained *optimization* (which changes all model parameters) always reduces MSE.
 
 ### 4.3 Implications for ZNE
 
 - Any ZNE estimate outside $[\mu_{\min}, \mu_{\max}]$ is provably wrong.
-- Enforcing spectral bounds is a free improvement: it cannot increase error.
+- Enforcing spectral bounds via post-hoc projection is a free improvement: it cannot increase pointwise error when the true value lies within bounds.
 - For Pauli observables ($\mathcal{C} = [-1, 1]$) and probability estimation ($\mathcal{C} = [0, 1]$), the bounds are known a priori without additional measurement.
 
 ### 4.4 What spectral bounds do NOT guarantee
@@ -153,7 +153,7 @@ At degree 1, no linear function passes within $\delta = 0.01$ of the exponential
 | 0.05    | 3.100     | 1.750         | 1.000               |
 | 0.1     | 6.200     | 2.000         | 1.000               |
 
-At $\delta = 0$ (exact data), the degree-4 polynomial is uniquely determined by 5 points, giving zero ambiguity. As $\delta$ increases (simulating shot noise), ambiguity grows linearly without bounds but is capped by physical constraints. At $\delta = 0.1$, probability bounds reduce ambiguity from 6.2 to 1.0 — a 6.2× reduction.
+At $\delta = 0$ (exact data), the degree-4 polynomial is uniquely determined by 5 points, giving zero ambiguity. As $\delta$ increases (simulating shot noise), ambiguity grows linearly without bounds but is capped by physical constraints. At $\delta = 0.1$, probability bounds reduce ambiguity from 6.2 to 1.0 — a 6.2× reduction in this specific synthetic experiment (degree-4 polynomial, exponential response, $n=5$).
 
 ### 5.4 Key observations
 
