@@ -20,7 +20,25 @@
 2. Check claims against `claim_ledger.md` before adding to LaTeX
 3. Verify citations in `literature.md` before including in `main.tex`
 4. Proven results go in `proofs.md`; conjectures stay in `theorem_sketches.md`
-5. Compile LaTeX: `pdflatex main.tex` (requires figures in `../figures/`)
+5. Compile LaTeX (see below)
+
+## Build Instructions
+
+From repo root:
+
+```bash
+# Regenerate figures (required before first compile)
+python experiments/generate_figures.py
+
+# Check all assets are present
+python scripts/check_paper_assets.py
+
+# Compile LaTeX
+cd paper
+pdflatex -interaction=nonstopmode main.tex
+```
+
+**Note:** `refs.bib` is not finalized yet. Bibliography will not fully resolve until citation verification is complete (see `literature.md` VERIFY entries). The paper compiles with warnings but no errors.
 
 ## Figures
 

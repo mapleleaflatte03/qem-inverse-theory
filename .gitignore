@@ -5,6 +5,7 @@ dist/
 build/
 .eggs/
 *.pdf
+!figures/*.pdf
 .venv/
 .env
 .pytest_cache/
