@@ -10,4 +10,9 @@ build/
 .env
 .pytest_cache/
 *.log
+*.aux
+*.out
+*.bbl
+*.blg
+*Notes.bib
 results/
