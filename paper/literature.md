@@ -1,5 +1,12 @@
 # Literature and Citations
 
+## Citation Audit Status
+
+**This file is a citation scaffold, not a final bibliography.**
+Entries marked VERIFY must be checked against official sources (arXiv, DOI, publisher) before use in any submission.
+
+---
+
 Citation keys for use in `draft.md`. To be converted to BibTeX for final submission.
 
 ---
@@ -15,7 +22,7 @@ K. Temme, S. Bravyi, J. M. Gambetta. "Error Mitigation for Short-Depth Quantum C
 *Why:* Introduces probabilistic error cancellation and quasi-probability extrapolation.
 
 **[GiurgicaTiron2020]**
-T. Giurgica-Tiron, Y. Hindy, R. LaRose, A. Mari, W. J. Zeng. "Digital Zero Noise Extrapolation for Quantum Error Mitigation." IEEE International Conference on Quantum Computing and Engineering (2020).
+T. Giurgica-Tiron, Y. Hindy, R. LaRose, A. Mari, W. J. Zeng. "Digital Zero Noise Extrapolation for Quantum Error Mitigation." VERIFY: IEEE International Conference on Quantum Computing and Engineering (QCE), 2020. Exact proceedings details to be confirmed.
 *Why:* Digital ZNE via unitary folding — the standard implementation method.
 
 ---
@@ -23,11 +30,11 @@ T. Giurgica-Tiron, Y. Hindy, R. LaRose, A. Mari, W. J. Zeng. "Digital Zero Noise
 ## Quantum Error Mitigation Reviews
 
 **[Cai2023]**
-Z. Cai, R. Babbush, S. C. Benjamin, S. Endo, W. J. Huggins, Y. Li, J. R. McClean, T. E. O'Brien. "Quantum Error Mitigation." Reviews of Modern Physics 95, 045005 (2023).
+Z. Cai, R. Babbush, S. C. Benjamin, S. Endo, W. J. Huggins, Y. Li, J. R. McClean, T. E. O'Brien. "Quantum Error Mitigation." VERIFY: Reviews of Modern Physics 95, 045005 (2023). Exact author list and volume to be confirmed.
 *Why:* Comprehensive review covering ZNE, PEC, and their limitations.
 
 **[Endo2021]**
-S. Endo, Z. Cai, S. C. Benjamin, X. Yuan. "Hybrid Quantum-Classical Algorithms and Quantum Error Mitigation." Journal of the Physical Society of Japan 90, 032001 (2021).
+S. Endo, Z. Cai, S. C. Benjamin, X. Yuan. "Hybrid Quantum-Classical Algorithms and Quantum Error Mitigation." VERIFY: Journal of the Physical Society of Japan 90, 032001 (2021). Exact venue/volume to be confirmed.
 *Why:* Review connecting QEM to variational algorithms.
 
 ---
@@ -39,11 +46,11 @@ R. Takagi, S. Endo, S. Minagawa, M. Gu. "Fundamental Limitations of Quantum Erro
 *Why:* Proves exponential sampling overhead for generic QEM. Key lower bound.
 
 **[Quek2024]**
-Y. Quek, D. S. França, S. Khatri, J. J. Meyer, J. Eisert. "Exponentially Tighter Bounds on Limitations of Quantum Error Mitigation." VERIFY: Nature Physics (2024).
-*Why:* Tighter exponential bounds. Identifies assumptions under which bounds apply.
+Y. Quek, D. S. França, S. Khatri, J. J. Meyer, J. Eisert. VERIFY: exact title, venue, and year. Believed to be published in Nature Physics 2024 but details unconfirmed.
+*Why:* Tighter exponential bounds on QEM. Identifies assumptions under which bounds apply.
 
 **[Tsubouchi2023]**
-K. Tsubouchi, T. Sagawa, N. Yoshioka. "Universal Cost Bound of Quantum Error Mitigation Based on Quantum Estimation Theory." Physical Review Letters 131, 210601 (2023).
+K. Tsubouchi, T. Sagawa, N. Yoshioka. "Universal Cost Bound of Quantum Error Mitigation Based on Quantum Estimation Theory." VERIFY: Physical Review Letters 131, 210601 (2023). Volume/page to be confirmed.
 *Why:* Universal cost framework connecting QEM to estimation theory.
 
 ---
@@ -51,7 +58,7 @@ K. Tsubouchi, T. Sagawa, N. Yoshioka. "Universal Cost Bound of Quantum Error Mit
 ## Inverse Problems / Hadamard Well-Posedness
 
 **[Hadamard1902]**
-J. Hadamard. "Sur les problèmes aux dérivées partielles et leur signification physique." Princeton University Bulletin 13, 49–52 (1902).
+J. Hadamard. "Sur les problèmes aux dérivées partielles et leur signification physique." VERIFY: Princeton University Bulletin 13, 49–52 (1902). Exact publication details to be confirmed.
 *Why:* Original definition of well-posedness (existence, uniqueness, stability).
 
 **[Tikhonov1963]**
@@ -67,7 +74,7 @@ P. C. Hansen. "Rank-Deficient and Discrete Ill-Posed Problems." SIAM (1998).
 ## Constrained Estimation / Projection
 
 **[Miranskyy2026]**
-A. Miranskyy, L. Zhang, J. Doliskani. "Physically Constrained Zero-Noise Extrapolation." arXiv:2604.24475 (2026).
+A. Miranskyy, L. Zhang, J. Doliskani. "Physically Constrained Zero-Noise Extrapolation." VERIFY: arXiv:2604.24475 (April 2026). Exact author list and title to be confirmed.
 *Why:* Bounded ZNE with model selection on 180K circuits. Direct predecessor.
 
 **[Boyd2004]**
@@ -87,7 +94,7 @@ A. M. Stuart. "Inverse Problems: A Bayesian Perspective." Acta Numerica 19, 451�
 *Why:* Foundational framework for Bayesian treatment of inverse problems.
 
 **[Ferrie2014]**
-C. Ferrie. "Self-Guided Quantum Tomography." Physical Review Letters 113, 190404 (2014).
+C. Ferrie. "Self-Guided Quantum Tomography." VERIFY: Physical Review Letters 113, 190404 (2014). Volume/page to be confirmed.
 *Why:* Bayesian approach to quantum state estimation.
 
 **[Rasmussen2006]**
