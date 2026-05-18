@@ -28,3 +28,19 @@ def test_all_referenced_figures_exist():
         fig_path = match.group(1)
         resolved = (ROOT / "paper" / fig_path).resolve()
         assert resolved.exists(), f"Missing figure: {fig_path}"
+
+
+def test_all_citation_keys_in_bib():
+    """Every \\cite{} key in main.tex must exist in refs.bib."""
+    tex = (ROOT / "paper" / "main.tex").read_text()
+    bib = (ROOT / "paper" / "refs.bib").read_text()
+
+    cite_keys = set()
+    for match in re.finditer(r"\\cite\{([^}]+)\}", tex):
+        for key in match.group(1).split(","):
+            cite_keys.add(key.strip())
+
+    bib_keys = set(re.findall(r"@\w+\{(\w+),", bib))
+
+    missing = cite_keys - bib_keys
+    assert not missing, f"Citation keys in main.tex but not in refs.bib: {missing}"

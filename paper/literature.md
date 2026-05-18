@@ -22,7 +22,7 @@ K. Temme, S. Bravyi, J. M. Gambetta. "Error Mitigation for Short-Depth Quantum C
 *Why:* Introduces probabilistic error cancellation and quasi-probability extrapolation.
 
 **[GiurgicaTiron2020]**
-T. Giurgica-Tiron, Y. Hindy, R. LaRose, A. Mari, W. J. Zeng. "Digital Zero Noise Extrapolation for Quantum Error Mitigation." VERIFY: IEEE International Conference on Quantum Computing and Engineering (QCE), 2020. Exact proceedings details to be confirmed.
+T. Giurgica-Tiron, Y. Hindy, R. LaRose, A. Mari, W. J. Zeng. "Digital Zero Noise Extrapolation for Quantum Error Mitigation." IEEE QCE 2020. DOI: 10.1109/QCE49297.2020.00045. arXiv:2005.10921.
 *Why:* Digital ZNE via unitary folding — the standard implementation method.
 
 ---
@@ -42,11 +42,11 @@ S. Endo, Z. Cai, S. C. Benjamin, X. Yuan. "Hybrid Quantum-Classical Algorithms a
 ## QEM Lower Bounds / Sample Complexity
 
 **[Takagi2022]**
-R. Takagi, S. Endo, S. Minagawa, M. Gu. "Fundamental Limitations of Quantum Error Mitigation." npj Quantum Information 8, 114 (2022).
+R. Takagi, S. Endo, S. Minagawa, M. Gu. "Fundamental Limitations of Quantum Error Mitigation." npj Quantum Information 8, 114 (2022). DOI: 10.1038/s41534-022-00618-z. arXiv:2109.04457.
 *Why:* Proves exponential sampling overhead for generic QEM. Key lower bound.
 
 **[Quek2024]**
-Y. Quek, D. S. França, S. Khatri, J. J. Meyer, J. Eisert. VERIFY: exact title, venue, and year. Believed to be published in Nature Physics 2024 but details unconfirmed.
+Y. Quek, D. S. França, S. Khatri, J. J. Meyer, J. Eisert. "Exponentially Tighter Bounds on Limitations of Quantum Error Mitigation." Nature Physics 20, 1648–1658 (2024). DOI: 10.1038/s41567-024-02536-7. arXiv:2210.11505.
 *Why:* Tighter exponential bounds on QEM. Identifies assumptions under which bounds apply.
 
 **[Tsubouchi2023]**
@@ -74,7 +74,7 @@ P. C. Hansen. "Rank-Deficient and Discrete Ill-Posed Problems." SIAM (1998).
 ## Constrained Estimation / Projection
 
 **[Miranskyy2026]**
-A. Miranskyy, L. Zhang, J. Doliskani. "Physically Constrained Zero-Noise Extrapolation." VERIFY: arXiv:2604.24475 (April 2026). Exact author list and title to be confirmed.
+A. Miranskyy, L. Zhang, J. Doliskani. "Improving Zero-Noise Extrapolation via Physically Bounded Models." arXiv:2604.24475 (2026). Not yet peer-reviewed.
 *Why:* Bounded ZNE with model selection on 180K circuits. Direct predecessor.
 
 **[Boyd2004]**
