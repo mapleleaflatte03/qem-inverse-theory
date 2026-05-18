@@ -9,7 +9,7 @@ These are informal statements at various stages of rigor. Status labels:
 
 ## Proposition 1: Non-Identifiability Without Physical Assumptions
 
-**Status:** Proposition (formalizable).
+**Status:** Proven. See [proofs.md](proofs.md).
 
 **Statement:**
 For any observations $\mathbf{y} = (y_1, \ldots, y_n)$ at scale factors $\boldsymbol{\lambda}$, and any target value $t \in \mathbb{R}$, there exists a polynomial $g$ of degree $n$ such that $g(\lambda_i) = y_i$ for all $i$ and $g(0) = t$.
@@ -29,7 +29,7 @@ which is a strict reduction from $\mathbb{R}$ but may still equal all of $[a,b]$
 
 ## Proposition 2: Spectral Projection Validity
 
-**Status:** Proposition (formalizable, elementary).
+**Status:** Proven. See [proofs.md](proofs.md).
 
 **Statement:**
 Let $O$ be a Hermitian observable with eigenvalues $\mu_1, \ldots, \mu_m$. For any quantum state $\rho$:
