@@ -26,6 +26,8 @@ These are supported by numerical experiments on synthetic data. They are not the
 | Ambiguity grows with tolerance δ | δ-sensitivity table: 0.0 → 0.001 → 0.01 → 0.05 → 0.1 shows monotone increase | Monotonicity not proven in general |
 | Bounds matter most when function class is flexible or data uncertainty is large | At δ=0.1: unbounded 6.2 vs probability-bounded 1.0 (6.2× reduction) | Specific to degree-4, exponential response, n=5 |
 | At low polynomial degree (d < n-1), function class alone constrains f(0) | Degrees 2–3 show same ambiguity regardless of bounds | Only tested for one response |
+| Increasing n reduces ambiguity only when model degree is fixed (overdetermined regime) | Fixed d=2: ambiguity 0.14→0.04 as n goes 3→7 | Single response, polynomial class only |
+| In the interpolation regime d = n-1, ambiguity grows with n | d=n-1: ambiguity 0.14→2.54 as n goes 3→7 | Specific to evenly-spaced scales and exponential response |
 
 ---
 

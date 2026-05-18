@@ -16,10 +16,11 @@
 
 - [x] Ambiguity diameter vs polynomial degree
 - [x] Ambiguity diameter vs tolerance δ
-- [ ] Ambiguity diameter vs number of scale factors n
+- [x] Ambiguity diameter vs number of scale factors n
 - [ ] Ambiguity diameter for non-polynomial function classes (exponential)
 - [ ] Multiple response functions (not just single exponential)
 - [ ] Connect δ to shot budget: δ = z_{α/2} · σ_max
+- [ ] Bias–ambiguity tradeoff for fixed-degree misspecified models
 
 ## Week 3: Literature Verification + BibTeX
 

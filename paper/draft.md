@@ -155,7 +155,39 @@ At degree 1, no linear function passes within $\delta = 0.01$ of the exponential
 
 At $\delta = 0$ (exact data), the degree-4 polynomial is uniquely determined by 5 points, giving zero ambiguity. As $\delta$ increases (simulating shot noise), ambiguity grows linearly without bounds but is capped by physical constraints. At $\delta = 0.1$, probability bounds reduce ambiguity from 6.2 to 1.0 — a 6.2× reduction in this specific synthetic experiment (degree-4 polynomial, exponential response, $n=5$).
 
-### 5.4 Key observations
+### 5.4 Ambiguity vs number of scale factors
+
+We study how ambiguity changes as $n$ increases, comparing two regimes: interpolation ($d = n-1$) and fixed degree ($d$ constant).
+
+**Interpolation regime ($d = n-1$, $\delta = 0.01$):**
+
+| n | No bounds | Pauli [-1, 1] | Probability [0, 1] |
+|---|-----------|---------------|---------------------|
+| 3 | 0.140     | 0.140         | 0.140               |
+| 5 | 0.620     | 0.510         | 0.510               |
+| 7 | 2.540     | 1.470         | 1.000               |
+
+**Fixed degree ($d = 2$, $\delta = 0.01$):**
+
+| n | No bounds | Pauli [-1, 1] | Probability [0, 1] |
+|---|-----------|---------------|---------------------|
+| 3 | 0.140     | 0.140         | 0.140               |
+| 5 | 0.070     | 0.070         | 0.070               |
+| 7 | 0.044     | 0.044         | 0.044               |
+
+**Fixed degree ($d = 3$, $\delta = 0.01$):**
+
+| n | No bounds | Pauli [-1, 1] | Probability [0, 1] |
+|---|-----------|---------------|---------------------|
+| 4 | 0.300     | 0.300         | 0.300               |
+| 5 | 0.180     | 0.180         | 0.180               |
+| 7 | 0.117     | 0.117         | 0.117               |
+
+In this synthetic setup, the contrast is clear: in the interpolation regime, ambiguity grows rapidly with $n$ (from 0.14 to 2.54 unbounded); in the fixed-degree regime, ambiguity shrinks monotonically (from 0.14 to 0.04 for $d=2$). Identifiability depends not on $n$ alone, but on the relation between $n$ and model complexity $d$.
+
+**Caveat:** Fixed-degree models reduce ambiguity but may introduce misspecification bias. A degree-2 polynomial cannot exactly represent an exponential response, so the "identified" value may be biased. The ambiguity diameter measures the range of *consistent* values, not the accuracy of the best estimate. The bias–ambiguity tradeoff is an important open question.
+
+### 5.5 Key observations
 
 1. **Physical bounds matter most in the high-uncertainty regime.** When data is precise ($\delta$ small), the function class alone constrains $f(0)$. When data is noisy ($\delta$ large), bounds become the dominant constraint.
 
