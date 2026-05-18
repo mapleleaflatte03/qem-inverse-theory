@@ -74,8 +74,9 @@ print()
 print("- Tighter physical bounds (e.g., [0,1] vs [-10,10]) reduce the ambiguity")
 print("  set when the polynomial degree is high enough to fit the data.")
 print()
-print("- At degree = n-1 = 4 (interpolation), the polynomial passes exactly through")
-print("  all points, and the only constraint on f(0) comes from the bounds.")
+print("- At degree = n-1 = 4, the polynomial class is flexible enough to interpolate")
+print("  the five noiseless nodes, and with tolerance δ it admits a wider set of")
+print("  near-consistent zero-noise values.")
 print()
 
 # Save results for results/ directory
@@ -111,8 +112,9 @@ output_lines.append("model complexity to determine identifiability of the zero-n
 output_lines.append("")
 output_lines.append("**When do bounds help?**")
 output_lines.append("- At high polynomial degree (d ≥ n-1), the function class is flexible enough")
-output_lines.append("  to fit the data with many different f(0) values. Physical bounds are the")
-output_lines.append("  only thing preventing the ambiguity set from being arbitrarily large.")
+output_lines.append("  to interpolate the data, and with tolerance δ it admits a wider set of")
+output_lines.append("  near-consistent zero-noise values. Physical bounds are the")
+output_lines.append("  primary constraint preventing the ambiguity set from growing large.")
 output_lines.append("- At low degree (d < n-1), the function class itself constrains f(0) through")
 output_lines.append("  the overdetermined least-squares structure. Bounds provide additional but")
 output_lines.append("  less critical reduction.")
@@ -135,3 +137,85 @@ os.makedirs("results", exist_ok=True)
 with open("results/ambiguity_diameter_table.md", "w") as f:
     f.write("\n".join(output_lines) + "\n")
 print("\nSaved: results/ambiguity_diameter_table.md")
+
+# --- Delta sensitivity analysis (degree 4 fixed) ---
+print()
+print("=" * 70)
+print("Delta Sensitivity: Ambiguity Diameter vs Tolerance (degree = 4)")
+print("=" * 70)
+print()
+
+delta_values = [0.0, 0.001, 0.01, 0.05, 0.1]
+deg_fixed = 4
+
+print(f"{'δ':<8} | {'No bounds [-10,10]':<20} | {'Pauli [-1,1]':<20} | {'Probability [0,1]':<20}")
+print("-" * 74)
+
+delta_results = {}
+for delta in delta_values:
+    row = {}
+    row_strs = []
+    for name, bounds in constraint_sets.items():
+        diam = ambiguity_diameter(scales, values, bounds, deg_fixed, tol=delta)
+        row[name] = diam
+        if np.isinf(diam):
+            row_strs.append("infeasible")
+        else:
+            row_strs.append(f"{diam:.4f}")
+    delta_results[delta] = row
+    print(f"  {delta:<6} | {row_strs[0]:<20} | {row_strs[1]:<20} | {row_strs[2]:<20}")
+
+# Save delta sensitivity table
+delta_lines = []
+delta_lines.append("# Ambiguity Diameter: Delta Sensitivity")
+delta_lines.append("")
+delta_lines.append("## Setup")
+delta_lines.append("")
+delta_lines.append(f"- Polynomial degree: {deg_fixed} (= n-1, interpolation regime)")
+delta_lines.append(f"- True f(0) = {f0_true}")
+delta_lines.append(f"- Response: f(λ) = {f0_true} · exp(-{decay_rate}·λ)")
+delta_lines.append(f"- Scales: {[float(s) for s in scales]}")
+delta_lines.append(f"- n = {len(scales)} data points")
+delta_lines.append("")
+delta_lines.append("## Results")
+delta_lines.append("")
+delta_lines.append("| δ (tolerance) | No bounds [-10, 10] | Pauli [-1, 1] | Probability [0, 1] |")
+delta_lines.append("|---------------|---------------------|---------------|---------------------|")
+for delta in delta_values:
+    row = delta_results[delta]
+    cells = []
+    for name in constraint_sets:
+        d = row[name]
+        cells.append("infeasible" if np.isinf(d) else f"{d:.4f}")
+    delta_lines.append(f"| {delta:<13} | {cells[0]:<19} | {cells[1]:<13} | {cells[2]:<19} |")
+
+delta_lines.append("")
+delta_lines.append("## Interpretation")
+delta_lines.append("")
+delta_lines.append("The tolerance δ represents how closely the polynomial must pass through the")
+delta_lines.append("observed data. In practice, δ corresponds to the shot-noise uncertainty:")
+delta_lines.append("larger δ means more noisy measurements, which admit more candidate functions")
+delta_lines.append("and thus increase the ambiguity diameter.")
+delta_lines.append("")
+delta_lines.append("**Observations:**")
+delta_lines.append("- At δ = 0 (exact interpolation), the ambiguity comes purely from the")
+delta_lines.append("  freedom of the degree-4 polynomial's value at λ=0 given 5 constraints.")
+delta_lines.append("- As δ increases, the feasible set of polynomials grows, and so does the")
+delta_lines.append("  range of achievable f(0) values.")
+delta_lines.append("- Physical bounds (Pauli or probability) cap the ambiguity diameter,")
+delta_lines.append("  becoming more important as δ grows.")
+delta_lines.append("")
+delta_lines.append("**Connection to finite-shot ZNE:**")
+delta_lines.append("- A natural choice is δ ≈ z_{α/2} · max_i σ_i, linking tolerance to")
+delta_lines.append("  confidence level and shot budget.")
+delta_lines.append("- This table shows that identifiability degrades continuously with")
+delta_lines.append("  measurement uncertainty — there is no sharp phase transition.")
+delta_lines.append("")
+delta_lines.append("**Caveats:**")
+delta_lines.append("- Monotonicity of diameter in δ is observed here but not proven in general.")
+delta_lines.append("- Results are specific to this exponential response and polynomial class.")
+delta_lines.append("- The LP formulation uses ℓ∞ tolerance; other norms may give different results.")
+
+with open("results/ambiguity_delta_sensitivity.md", "w") as f:
+    f.write("\n".join(delta_lines) + "\n")
+print("\nSaved: results/ambiguity_delta_sensitivity.md")
