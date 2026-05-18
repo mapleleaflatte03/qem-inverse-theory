@@ -77,6 +77,16 @@ This is a constrained inverse problem. We study its well-posedness in the sense 
 
 Early research prototype. See [STATUS.md](STATUS.md).
 
+## Checkpoint
+
+Current: **v0.1-research-scaffold**
+
+Verify with:
+```bash
+bash scripts/smoke_check.sh
+```
+Expected: 41 tests pass, all safety checks green.
+
 ## Current Paper Status
 
 - LaTeX skeleton exists (`paper/main.tex`) with 7 sections, 2 proven propositions
