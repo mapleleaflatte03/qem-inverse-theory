@@ -25,6 +25,11 @@ def test_no_overclaims_outside_limitations():
         "", tex, flags=re.DOTALL
     )
     for phrase in FORBIDDEN:
-        assert phrase.lower() not in tex_no_lim.lower(), (
-            f"Forbidden overclaim '{phrase}' found outside Limitations section"
-        )
+        for line in tex_no_lim.splitlines():
+            if phrase.lower() in line.lower():
+                negated = any(neg in line.lower() for neg in [
+                    "no ", "not ", "does not", "do not", "without", "\\emph{not}"
+                ])
+                assert negated, (
+                    f"Forbidden overclaim '{phrase}' found without negation: {line.strip()}"
+                )

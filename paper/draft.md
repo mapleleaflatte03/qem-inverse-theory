@@ -219,6 +219,22 @@ This motivates model selection as a necessary complement to physical constraints
 
 ---
 
+---
+
+## 6. Discussion
+
+The inverse-problem perspective on ZNE yields several insights:
+
+**Physical bounds are most valuable in the high-uncertainty regime.** When data is precise, the function class alone constrains $f(0)$. When data is noisy (large $\delta$), physical bounds become the dominant constraint preventing unbounded ambiguity.
+
+**The key ratio is $n/(d+1)$, not $n$ alone.** More data helps only if model complexity is held fixed. In the interpolation regime, adding measurements without constraining the model provides no identifiability benefit.
+
+**Model selection is essential but fundamentally limited.** The bias–ambiguity tradeoff shows that no single polynomial degree is universally optimal. Information-theoretic criteria offer principled approaches, but their optimality for ZNE in the small-sample regime ($n \leq 7$) is not established.
+
+**Connection to QEM lower bounds.** Takagi et al. [Takagi2022] and Quek et al. [Quek2024] establish exponential sampling overhead for generic QEM. Our framework does not contradict these results. Rather, it provides tools to study structured settings where identifiability may be restored—an open research direction, not a claimed result.
+
+---
+
 ## Limitations
 
 - **Synthetic data only.** All results use analytically defined response functions. No quantum hardware or circuit simulation is involved.

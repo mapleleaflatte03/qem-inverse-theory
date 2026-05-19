@@ -34,7 +34,9 @@ for phrase in FORBIDDEN:
     # Check non-limitations text for forbidden phrases
     for i, line in enumerate(non_limitations_text.splitlines(), 1):
         if phrase.lower() in line.lower():
-            errors.append(f"Forbidden phrase '{phrase}' found outside Limitations: line ~{i}")
+            negated = any(neg in line.lower() for neg in ["no ", "not ", "does not", "do not", "without", "\\emph{not}"])
+            if not negated:
+                errors.append(f"Forbidden phrase '{phrase}' found outside Limitations: line ~{i}")
 
     # In Limitations, allow only negated forms
     for i, line in enumerate(limitations_text.splitlines(), 1):

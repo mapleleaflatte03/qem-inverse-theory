@@ -30,6 +30,9 @@ These are supported by numerical experiments on synthetic data. They are not the
 | In the interpolation regime d = n-1, ambiguity grows with n | d=n-1: ambiguity 0.14→2.54 as n goes 3→7 | Specific to evenly-spaced scales and exponential response |
 | Bias–ambiguity tradeoff: lower degree reduces ambiguity but increases misspecification bias | n=7: d=2 has bias 0.035/ambiguity 0.04; d=6 has bias 0.000/ambiguity 2.54 | Single exponential response, noiseless, no proof of optimal selection |
 | Higher degree reduces bias but increases ambiguity | Monotone in both directions across d=2..6 for this response | No proof this holds for all responses |
+| Physical bounds are most valuable in the high-uncertainty regime | δ sensitivity shows bounds cap ambiguity as δ grows | Interpretation of synthetic results, not a theorem |
+| Identifiability depends on n/(d+1) ratio, not n alone | n-sensitivity comparison: interpolation vs fixed degree | Observed pattern, not proven in general |
+| Model selection is essential but fundamentally limited for ZNE | Bias-ambiguity tradeoff shows no single degree is optimal | Does not claim AICc or any criterion is optimal |
 
 ---
 
