@@ -78,3 +78,13 @@ def test_top_level_exports():
     assert fit_loc_top is fit_locality_aware_zne
     assert eos_top is estimate_observable_support
     assert lep_top is locality_envelope_proxy
+
+
+def test_locality_results_contain_heuristic_caveat():
+    """Results file must contain honest labeling."""
+    from pathlib import Path
+    results_path = Path(__file__).resolve().parent.parent / "results" / "locality_aware_proxy.md"
+    if results_path.exists():
+        text = results_path.read_text().lower()
+        assert "heuristic" in text
+        assert "not a rigorous theorem" in text or "not a rigorous" in text

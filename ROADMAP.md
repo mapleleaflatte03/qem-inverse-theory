@@ -92,13 +92,16 @@ Deferred to v0.7+:
 
 Focus: heuristic support-size proxy, not rigorous theorem.
 
-- [ ] Support-size estimation from Pauli strings
-- [ ] Locality envelope proxy (heuristic, not commutator-derived)
-- [ ] Adaptive regularization from locality proxy
-- [ ] Experiment comparing standard vs locality-aware across support sizes
-- [ ] Explicitly labeled as heuristic, not theorem-backed
+- [x] Support-size estimation from Pauli strings
+- [x] Locality envelope proxy (heuristic, not commutator-derived)
+- [x] Adaptive regularization from locality proxy
+- [x] Experiment comparing standard vs locality-aware across support sizes
+- [x] Explicitly labeled as heuristic, not theorem-backed
+- [x] Negative result documented: current proxy over-regularizes
 
 Deferred to v0.9+:
+- Calibrate locality-aware regularization mapping (cross-validation or data-driven)
+- Derive commutator-envelope proxy from Lindbladian structure
 - Rigorous commutator envelope bounds
 - Structured lower-bound taxonomy
 - Circuit-family benchmarks (TFIM, VQE, QAOA)
