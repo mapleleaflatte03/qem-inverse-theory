@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.4-arxiv-package-ready
+
+- Added arXiv source package builder (`scripts/build_arxiv_package.sh`)
+- Added arXiv package integrity checker (`scripts/check_arxiv_package.py`)
+- Package includes: main.tex, refs.bib, main.bbl, and 4 PDF figures
+- Package excludes: aux/log/out/blg/png files
+- Smoke check no longer dirties tracked figures
+- arXiv source zip builds at `dist/qem-inverse-theory-arxiv-source.zip`
+
 ## v0.3-reviewer-readable-draft
 
 - Polished abstract into problem/results/scope structure
