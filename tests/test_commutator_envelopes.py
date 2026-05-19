@@ -50,7 +50,8 @@ def test_commutator_growth_increases_with_weight():
 
 
 def test_derivative_envelope_finite():
-    env = derivative_envelope_proxy("ZZII", H_TERMS, N_TERMS, depth=5, noise_strength=0.04)
+    # XZXI doesn't commute with Z noise terms, so derivative bound > 0
+    env = derivative_envelope_proxy("XZXI", H_TERMS, N_TERMS, depth=5, noise_strength=0.04)
     assert np.isfinite(env["derivative_bound_proxy"])
     assert env["derivative_bound_proxy"] > 0
 
