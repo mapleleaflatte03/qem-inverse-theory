@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.7-bayesian-sequential-prototype
+
+- Added Bayesian GP hyperparameter optimization via marginal likelihood
+- Added NLL diagnostics (nll_before, nll_after) for calibration tracking
+- Added `design_next_scale()` greedy sequential design prototype
+- Added sequential design experiment with two candidate regimes:
+  - λ≥1 ZNE-relevant: 24.3% MSE improvement (synthetic exponential)
+  - λ≥0.5 synthetic near-zero: 66.2% MSE improvement (clearly labeled non-standard ZNE)
+- Updated deep research implementation audit (Bayesian → calibration partial, sequential → prototype)
+- Tests increased from 57 to 64
+- Known limitations: greedy one-step design, single response function, synthetic only, no global optimality
+
 ## v0.6-core-research-implementation
 
 - Added Chebyshev-basis constrained ZNE with Tikhonov regularization
