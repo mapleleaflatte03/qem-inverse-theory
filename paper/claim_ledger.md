@@ -33,6 +33,15 @@ These are supported by numerical experiments on synthetic data. They are not the
 | Physical bounds are most valuable in the high-uncertainty regime | δ sensitivity shows bounds cap ambiguity as δ grows | Interpretation of synthetic results, not a theorem |
 | Identifiability depends on n/(d+1) ratio, not n alone | n-sensitivity comparison: interpolation vs fixed degree | Observed pattern, not proven in general |
 | Model selection is essential but fundamentally limited for ZNE | Bias-ambiguity tradeoff shows no single degree is optimal | Does not claim AICc or any criterion is optimal |
+| Chebyshev-Tikhonov extrapolates outside basis domain (z0 < -1) | Diagnostics confirm z0 = -1.5 for scales [1,5] | Implementation detail, not a claim of superiority |
+| Bounded polynomial ZNE helps in 16/20 phase diagram cells (exponential) | Experiment 08 aggregate | Single response, synthetic, 50 trials per cell |
+| Bayesian GP with fixed hyperparameters harms in 13/20 cells | Experiment 08 aggregate | Demonstrates need for calibration, not method failure |
+| Bayesian 90% CI achieves 89% coverage at low noise | Experiment 09 aggregate (noise=0.10) | Well-calibrated in this regime only |
+| Bayesian 90% CI achieves only 70% coverage at high noise | Experiment 09 aggregate (noise=0.25) | Negative result: fixed hyperparameters insufficient |
+| Sequential design (λ≥1) achieves 24.3% MSE reduction | Experiment 10 (50 trials, exponential) | Single response, greedy one-step, synthetic |
+| Sequential design (λ≥0.5) achieves 66% but is non-standard ZNE | Experiment 10 | Clearly labeled synthetic near-zero, not ZNE-relevant |
+| Locality-aware heuristic worsens MSE by 1-11% | Experiment 11 (100 trials) | Negative result: proxy over-regularizes |
+| Six candidate escape-hatch structures identified | Taxonomy in docs + paper | Research directions, not proven escape hatches |
 
 ---
 
