@@ -106,6 +106,23 @@ Deferred to v0.9+:
 - Structured lower-bound taxonomy
 - Circuit-family benchmarks (TFIM, VQE, QAOA)
 
+## v0.9 — Structured Lower-Bound Taxonomy
+
+Focus: organize the escape-hatch research space, not prove theorems.
+
+- [ ] StructureDescriptor dataclass for instance classification
+- [ ] classify_structure() heuristic
+- [ ] explain_escape_hatch() with assumptions/limitations
+- [ ] Taxonomy document with 6 candidate structure classes
+- [ ] Paper-ready escape-hatch table
+- [ ] Tests ensuring no overclaim language
+- [ ] Explicitly labeled as taxonomy, not theorem
+
+Deferred to v1.0+:
+- Rigorous minimax lower bounds for structured classes
+- Matching upper bounds for one structured class
+- Circuit-family benchmarks validating taxonomy predictions
+
 ---
 
 ## Success Criteria
