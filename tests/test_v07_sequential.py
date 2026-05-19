@@ -60,3 +60,19 @@ def test_design_reduces_posterior_variance():
     var_after = r_after.diagnostics["posterior_var_g0"]
 
     assert var_after <= var_before + 1e-6
+
+
+def test_design_respects_candidate_minimum():
+    """If all candidates are ≥1, selected scale must be ≥1."""
+    data = _make_data()
+    candidates_ge1 = np.arange(1.0, 6.0, 0.5)
+    selected = design_next_scale(data, candidates_ge1, bounds=(-1, 1))
+    assert selected >= 1.0
+
+
+def test_design_selects_from_provided_pool():
+    """Selected scale must be one of the provided candidates."""
+    data = _make_data()
+    candidates = np.array([1.5, 2.5, 3.5, 4.5])
+    selected = design_next_scale(data, candidates, bounds=(-1, 1))
+    assert selected in candidates
