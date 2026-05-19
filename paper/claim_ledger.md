@@ -14,6 +14,7 @@ These have complete proofs (see `paper/proofs.md`).
 | Expectation values lie within observable spectral bounds | Born rule + convex combination | Proposition 2 |
 | Post-hoc projection of a scalar estimate onto the spectral interval cannot increase pointwise error when the true value lies inside | Non-expansiveness of projection onto convex set | Corollary 2.1 |
 | Under stylized bias-variance model, ZNE helps iff ΔB² > ΔV/N; critical shot count N* = ΔV/ΔB² | Direct MSE subtraction | Proposition 3 |
+| Two-point Le Cam: if admissible responses are close at observed scales but separated at zero, MSE ≥ (Δf(0)/2)²×(1-TV) | Standard Le Cam two-point method + Pinsker | Proposition 4 |
 
 ---
 

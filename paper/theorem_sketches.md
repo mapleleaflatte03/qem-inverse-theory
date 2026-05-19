@@ -135,3 +135,32 @@ Under a bias-variance decomposition MSE = B² + V/N, ZNE improves over raw iff �
 - Does not prove ZNE always helps above any universal threshold
 
 **Empirical validation:** Experiment 08 phase diagram is consistent with this criterion (low-shot harm, high-shot help).
+
+---
+
+## Proposition 4: Two-Point Indistinguishability Lower Bound
+
+**Status:** Proven (standard Le Cam argument applied to ZNE setting).
+
+**Statement:**
+Let f+, f- be two admissible response functions with |f+(0) - f-(0)| = Δf(0) and |f+(λ_i) - f-(λ_i)| ≤ Δ_obs for all observed i. Under Gaussian noise with variance σ²/N per point across n observed scales, any estimator satisfies:
+
+    MSE ≥ (Δf(0)/2)² × (1 - TV)
+
+where TV ≤ √(n × Δ_obs² × N / (4σ²)) via Pinsker's inequality.
+
+**Proof:** Standard Le Cam two-point method. The testing error between the two hypotheses is lower bounded by (1 - TV)/2. Any estimator that achieves small MSE must implicitly solve the testing problem, giving the stated bound.
+
+**Connection to ambiguity diameter:**
+This formalizes the intuition that large ambiguity diameter implies fundamental estimation difficulty. If many admissible responses agree at observed scales but disagree at zero noise, no estimator can reliably recover f(0).
+
+**Assumptions:**
+- Gaussian observation model (approximation of shot noise)
+- Two specific admissible responses (not minimax over full class)
+- Known noise variance
+
+**Limitations:**
+- Two-point bound, not minimax over a function class
+- Does not prove a universal QEM lower bound
+- Does not apply to all possible noise channels
+- Tighter bounds would require Le Cam or Fano over larger hypothesis sets
