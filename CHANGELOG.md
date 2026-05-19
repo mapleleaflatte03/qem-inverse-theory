@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.5-commutator-locality-envelope
+
+- Added commutator-sensitive derivative envelope proxy (`theory/commutator_envelopes.py`)
+- Added Pauli commutation and support-growth utilities
+- Added `locality_mode="commutator"` to locality-aware estimator
+- Added experiment 13: local/two-local/string/mixed Pauli observables
+- Proxy correctly distinguishes commuting (Z-type, bound=0) from non-commuting (XZXI, bound>0) observables
+- Neutral/negative results preserved: commutator regularization did not improve all cases
+- Known limitation: proxy based on Pauli commutation counting, not rigorous Lieb-Robinson theorem
+- Tests increased from 106 to 117
+
 ## v1.3-arxiv-submission-package
 
 - Rebuilt final arXiv source package after Proposition 3
