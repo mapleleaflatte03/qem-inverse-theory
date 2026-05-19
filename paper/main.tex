@@ -183,6 +183,30 @@ Similar patterns hold for quadratic and mixed-oscillatory responses (e.g., Cheby
 The Bayesian GP with fixed hyperparameters harms in 13/20 cells---illustrating that sophisticated methods can underperform without calibration.
 Other response functions may yield different rankings.
 
+The following proposition formalizes the help/harm boundary under a stylized bias--variance model.
+
+\begin{proposition}[Finite-shot help/harm threshold]
+\label{prop:helpharm}
+Let the raw estimator have $\mathrm{MSE}_{\mathrm{raw}} = B_{\mathrm{raw}}^2 + V_{\mathrm{raw}}/N$ and a ZNE estimator have $\mathrm{MSE}_{\mathrm{ZNE}} = B_{\mathrm{ZNE}}^2 + V_{\mathrm{ZNE}}/N$, where $B^2$ is squared bias, $V/N$ is variance (with $N$ total shots), and both depend on the response function and method.
+Then ZNE improves over raw ($\mathrm{MSE}_{\mathrm{ZNE}} < \mathrm{MSE}_{\mathrm{raw}}$) if and only if:
+\begin{equation}
+\label{eq:helpharm}
+\Delta B^2 > \frac{\Delta V}{N}
+\end{equation}
+where $\Delta B^2 = B_{\mathrm{raw}}^2 - B_{\mathrm{ZNE}}^2$ (bias reduction) and $\Delta V = V_{\mathrm{ZNE}} - V_{\mathrm{raw}}$ (variance amplification).
+If $\Delta B^2 > 0$ and $\Delta V > 0$, the critical shot count is $N^* = \Delta V / \Delta B^2$.
+\end{proposition}
+
+\begin{proof}
+$\mathrm{MSE}_{\mathrm{ZNE}} < \mathrm{MSE}_{\mathrm{raw}}$ iff $B_{\mathrm{ZNE}}^2 + V_{\mathrm{ZNE}}/N < B_{\mathrm{raw}}^2 + V_{\mathrm{raw}}/N$, which rearranges to $(B_{\mathrm{raw}}^2 - B_{\mathrm{ZNE}}^2) > (V_{\mathrm{ZNE}} - V_{\mathrm{raw}})/N$.
+\end{proof}
+
+\textbf{Interpretation.}
+This is a stylized criterion, not a universal theorem.
+It assumes bias and variance are known and decomposable, which they are not in practice.
+However, it explains the phase-diagram structure: at low $N$, variance amplification dominates ($\Delta V/N$ is large) and ZNE harms; at high $N$, bias reduction dominates and ZNE helps.
+The threshold $N^*$ depends on the specific response and method---it is not a universal constant.
+
 %% ============================================================
 \section{Bayesian Bounded ZNE}
 \label{sec:bayesian}

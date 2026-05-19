@@ -13,6 +13,7 @@ These have complete proofs (see `paper/proofs.md`).
 | Without function-class restrictions, f(0) is not identifiable from finite observations | Lagrange interpolation on n+1 distinct points | Proposition 1 |
 | Expectation values lie within observable spectral bounds | Born rule + convex combination | Proposition 2 |
 | Post-hoc projection of a scalar estimate onto the spectral interval cannot increase pointwise error when the true value lies inside | Non-expansiveness of projection onto convex set | Corollary 2.1 |
+| Under stylized bias-variance model, ZNE helps iff ΔB² > ΔV/N; critical shot count N* = ΔV/ΔB² | Direct MSE subtraction | Proposition 3 |
 
 ---
 

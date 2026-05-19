@@ -116,23 +116,22 @@ Do there exist natural circuit/observable structures under which ZNE achieves po
 
 ## Proposition 3: Help/Harm Decision Criterion (Elementary)
 
-**Status:** Formalizable (elementary MSE decomposition).
+**Status:** Proven (stylized bias-variance model). See `paper/main.tex` Proposition 3.
 
 **Statement:**
-Let $\hat{f}_{\mathrm{raw}} = y_1$ (measurement at lowest scale) and $\hat{f}_{\mathrm{ZNE}}$ be any ZNE estimator. Define:
-- $\mathrm{MSE}_{\mathrm{raw}} = [f(\lambda_1) - f(0)]^2 + \sigma_1^2$
-- $\mathrm{MSE}_{\mathrm{ZNE}} = \mathrm{Bias}^2_{\mathrm{ZNE}} + \mathrm{Var}_{\mathrm{ZNE}}$
+Under a bias-variance decomposition MSE = B² + V/N, ZNE improves over raw iff ΔB² > ΔV/N, where ΔB² = B_raw² - B_ZNE² and ΔV = V_ZNE - V_raw. Critical shot count: N* = ΔV/ΔB².
 
-ZNE helps if and only if $\mathrm{MSE}_{\mathrm{ZNE}} < \mathrm{MSE}_{\mathrm{raw}}$.
+**Proof:** Direct subtraction of MSE expressions.
 
-For a well-specified linear estimator with condition number $\kappa_U$ and uniform shot allocation ($N$ total shots, $n$ points):
-$$\mathrm{Var}_{\mathrm{ZNE}} \approx \kappa_U^2 \cdot \frac{v \cdot n}{N}$$
+**Assumptions:**
+- Bias and variance are separable and known
+- Shot noise scales as V/N (uniform allocation)
+- No model-selection randomness accounted for
 
-where $v$ is single-shot variance. The critical shot count below which ZNE harms is:
-$$N^* \approx \frac{\kappa_U^2 \cdot v \cdot n}{[f(\lambda_1) - f(0)]^2 + \sigma_1^2 - \mathrm{Bias}^2_{\mathrm{ZNE}}}$$
+**Limitations:**
+- In practice, B and V are unknown and must be estimated
+- Does not account for model misspecification uncertainty
+- N* depends on the unknown true response
+- Does not prove ZNE always helps above any universal threshold
 
-**Proof idea:** Direct comparison of MSE expressions. Elementary but useful as a decision criterion.
-
-**Empirical validation:** Experiment 08 confirms the existence of a help/harm boundary that shifts with shot budget and noise strength.
-
-**What this does NOT prove:** It does not determine the optimal estimator, does not account for model selection randomness, and assumes the bias and variance are known (which they are not in practice).
+**Empirical validation:** Experiment 08 phase diagram is consistent with this criterion (low-shot harm, high-shot help).
