@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.1-reviewer-rebalanced-manuscript
+
+- Rebalanced manuscript around ambiguity diameter as the central contribution
+- Added ambiguity diameter figure (Fig. 1) and bias-ambiguity tradeoff figure (Fig. 2)
+- Added formal definitions of function class, tolerance, and admissible set in §2
+- Expanded related work: distinguished bounded-ZNE estimators from identifiability analysis
+- Added representative method-comparison table (Table 1) and sequential design table (Table 2)
+- Compressed locality and structured taxonomy into limitations/future directions
+- Softened 5 over-strong claims identified by reviewer audit
+- Confirmed no unsafe wording remains (automated grep + claim safety test)
+- Explicit paper scope: "framework paper with supporting synthetic experiments"
+- Tests remain 80 passing; LaTeX builds cleanly (4 pages two-column)
+- Known limitation: workshop-ready draft, not yet public-arXiv-ready (VERIFY citations, single response dominance)
+
 ## v1.0-paper-integration-draft
 
 - Integrated v0.6–v0.9 research results into `paper/main.tex`
