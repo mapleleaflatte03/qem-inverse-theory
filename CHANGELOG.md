@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.0-paper-integration-draft
+
+- Integrated v0.6–v0.9 research results into `paper/main.tex`
+- Expanded manuscript to 11 sections (4 pages two-column ≈ 8 single-column)
+- Added: Chebyshev-Tikhonov estimator, finite-shot phase diagram, Bayesian calibration, sequential design, locality negative result, escape-hatch taxonomy
+- Added 10 claim-ledger entries for new manuscript content
+- Added Claim Safety Checklist (9 pre-submission verification items)
+- Softened "hardware validation" → "eventual hardware evaluation"
+- LaTeX builds cleanly (pdflatex + bibtex)
+- Tests remain 80 passing
+- Known limitation: integration draft, not submission-ready peer-reviewed work
+
 ## v0.9-structured-lower-bound-taxonomy
 
 - Added structured lower-bound / escape-hatch taxonomy
