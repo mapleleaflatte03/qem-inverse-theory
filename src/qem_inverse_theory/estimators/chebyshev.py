@@ -71,6 +71,15 @@ def fit_chebyshev_tikhonov_zne(
     residuals = y - Phi @ result.x
     rss = float(np.sum(residuals**2))
 
+    # Condition number proxy: L1 norm of extrapolation weights
+    # (how much noise at observed points amplifies into f(0))
+    try:
+        Phi_pinv = np.linalg.pinv(Phi)
+        extrap_weights = e0 @ Phi_pinv
+        kappa_proxy = float(np.sum(np.abs(extrap_weights)))
+    except np.linalg.LinAlgError:
+        kappa_proxy = float("inf")
+
     return FitResult(
         estimate=estimate,
         method="chebyshev_tikhonov",
@@ -81,6 +90,8 @@ def fit_chebyshev_tikhonov_zne(
             "degree": degree,
             "success": result.success,
             "coeff_norm": float(np.linalg.norm(result.x)),
+            "condition_number_proxy": kappa_proxy,
+            "z0_extrapolation": float(2.0 * (0.0 - x.min()) / max(1e-12, x.max() - x.min()) - 1.0),
         },
         assumptions=[
             f"Chebyshev basis degree {degree}",

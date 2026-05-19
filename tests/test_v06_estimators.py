@@ -111,3 +111,41 @@ def test_bayesian_matern_kernel():
     result = fit_bayesian_zne_gp(data, bounds=(-1, 1), kernel="matern32")
     assert -1.0 <= result.estimate <= 1.0
     assert result.diagnostics["kernel"] == "matern32"
+
+
+# --- Edge case tests ---
+
+def test_chebyshev_extrapolation_outside_observed():
+    """z0 should be outside [-1,1] when λ=0 < min(scales)."""
+    data = _make_data()
+    result = fit_chebyshev_tikhonov_zne(data, degree=3, bounds=(-1, 1))
+    z0 = result.diagnostics["z0_extrapolation"]
+    assert z0 < -1.0, f"z0={z0} should be < -1 for extrapolation"
+    assert -1.0 <= result.estimate <= 1.0
+
+
+def test_chebyshev_has_condition_number():
+    data = _make_data()
+    result = fit_chebyshev_tikhonov_zne(data, degree=2, bounds=(-1, 1))
+    assert "condition_number_proxy" in result.diagnostics
+    assert result.diagnostics["condition_number_proxy"] > 0
+
+
+def test_bayesian_observations_exceed_bounds():
+    """Observations slightly outside bounds due to shot noise should not crash."""
+    scales = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+    # Some values exceed [-1, 1]
+    values = np.array([1.05, 0.8, 0.6, 0.4, -0.1])
+    data = ZNEData(scales=scales, estimates=values)
+    result = fit_bayesian_zne_gp(data, bounds=(-1, 1))
+    assert np.isfinite(result.estimate)
+    assert -1.0 <= result.estimate <= 1.0
+    assert result.diagnostics["clipped_observation_count"] >= 1
+
+
+def test_bayesian_ci90_narrower_than_ci95():
+    data = _make_data()
+    result = fit_bayesian_zne_gp(data, bounds=(-1, 1))
+    ci90 = result.diagnostics["ci90"]
+    ci95 = result.diagnostics["ci95"]
+    assert (ci90[1] - ci90[0]) <= (ci95[1] - ci95[0]) + 1e-10

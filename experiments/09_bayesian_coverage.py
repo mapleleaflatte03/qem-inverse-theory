@@ -95,14 +95,26 @@ lines = ["# Bayesian ZNE Coverage Calibration", "",
 for r in all_results:
     lines.append(f"| {r['response']:12s} | {r['noise']:.2f}  | {r['shots']:5d} | "
                  f"{r['coverage_90']:.2%}       | {r['coverage_95']:.2%}       | {r['avg_width_95']:.3f}     |")
+lines += ["", "## Aggregate by noise level", "",
+          "| Noise | Mean 90% coverage | Mean 95% coverage | Mean width |",
+          "|-------|-------------------|-------------------|------------|"]
+for noise in noise_strengths:
+    subset = [r for r in all_results if r["noise"] == noise]
+    m90 = np.mean([r["coverage_90"] for r in subset])
+    m95 = np.mean([r["coverage_95"] for r in subset])
+    mw = np.mean([r["avg_width_95"] for r in subset])
+    lines.append(f"| {noise:.2f}  | {m90:.2%}            | {m95:.2%}            | {mw:.3f}      |")
+
 lines += ["", "## Interpretation", "",
           "Coverage below nominal indicates the intervals are too narrow (overconfident).",
           "Coverage above nominal indicates the intervals are too wide (conservative).",
           "Neither case proves the estimator is good or bad — only that calibration",
           "depends on the response function, noise level, and shot budget.",
           "",
-          "Hyperparameters are not optimized. Improved calibration may be achievable",
-          "with marginal likelihood optimization or cross-validation.",
+          "**High-noise undercoverage** is a calibration limitation of the fixed-hyperparameter",
+          "GP, not a fundamental failure of the Bayesian approach. Improved calibration may be",
+          "achievable with marginal likelihood optimization or cross-validation.",
+          "",
           "These results are synthetic and do not generalize to hardware."]
 
 with open("results/bayesian_coverage.md", "w") as f:

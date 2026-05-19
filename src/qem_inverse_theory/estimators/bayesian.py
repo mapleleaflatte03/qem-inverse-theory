@@ -48,6 +48,7 @@ def fit_bayesian_zne_gp(
 
     # Transform observations to latent space: g = arctanh((y - mid) / radius)
     y_normalized = (y - midpoint) / radius
+    clipped_count = int(np.sum(np.abs(y_normalized) >= 0.999))
     y_clipped = np.clip(y_normalized, -0.999, 0.999)  # avoid ±inf
     g_obs = np.arctanh(y_clipped)
 
@@ -106,6 +107,9 @@ def fit_bayesian_zne_gp(
             "amplitude": amplitude,
             "kernel": kernel,
             "bounded_transform": bounded_transform,
+            "clipped_observation_count": clipped_count,
+            "latent_noise_variance_min": float(latent_var.min()),
+            "latent_noise_variance_max": float(latent_var.max()),
         },
         assumptions=[
             f"GP on latent g(λ) with {kernel} kernel",

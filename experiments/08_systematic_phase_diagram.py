@@ -123,11 +123,32 @@ for noise in noise_grid:
         best = min(row, key=row.get)
         lines.append(f"- noise={noise}, shots={shots}: best={best} (MSE={row[best]:.4f})")
 
+lines += ["", "## Aggregate summary (exponential response)", "",
+          "| Method | Avg log10(MSE_raw/MSE_method) | Help cells | Harm cells | Neutral |",
+          "|--------|-------------------------------|------------|------------|---------|"]
+
+method_names = [m for m in methods if m != "raw"]
+for m_name in method_names:
+    ratios = []
+    help_c, harm_c, neut_c = 0, 0, 0
+    for noise in noise_grid:
+        for shots in shots_grid:
+            row = all_results["exponential"][(noise, shots)]
+            r = compute_help_harm_ratio(row["raw"], row[m_name])
+            if np.isfinite(r) and r > 0:
+                ratios.append(np.log10(r))
+                if r > 1.05: help_c += 1
+                elif r < 0.95: harm_c += 1
+                else: neut_c += 1
+    avg_lr = np.mean(ratios) if ratios else 0
+    lines.append(f"| {m_name:<14} | {avg_lr:+.3f}                         | {help_c:<10} | {harm_c:<10} | {neut_c:<7} |")
+
 lines += ["", "## Interpretation", "",
           "These synthetic results illustrate the finite-shot help/harm landscape.",
           "At low shots, variance amplification from extrapolation can make mitigation harmful.",
           "At high shots, bias reduction dominates and mitigation helps.",
-          "This does not prove any method is universally superior."]
+          "This does not prove any method is universally superior.",
+          "Results are specific to these synthetic responses and do not generalize to hardware."]
 
 with open("results/systematic_phase_diagram.md", "w") as f:
     f.write("\n".join(lines) + "\n")
