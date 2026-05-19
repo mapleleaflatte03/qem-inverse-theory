@@ -57,6 +57,39 @@ Do NOT proceed to submission/preprint until:
 
 ---
 
+## ⚠️ Warning: Do Not Submit Until Core Gaps Audited
+
+arXiv packaging infrastructure is complete (v0.4). However, the deep research report identifies significant implementation gaps. Do not submit the paper until:
+- At least one additional theoretical result beyond Props 1-2
+- Bayesian ZNE has calibrated coverage
+- Phase diagram experiment is systematic (not toy)
+- Multiple response functions tested
+
+See `docs/deep_research_implementation_audit.md` for full gap analysis.
+
+---
+
+## v0.6 — Return to Core Research Implementation
+
+Focus: substantive research code, not packaging or release.
+
+- [ ] Bounded Bayesian ZNE with tanh transform + coverage calibration
+- [ ] Chebyshev-basis constrained estimator with Tikhonov penalty
+- [ ] Systematic finite-shot phase diagram (multiple responses, grid)
+- [ ] Formalize help/harm criterion as proposition
+- [ ] Multiple response functions in ambiguity experiments
+- [ ] Estimator protocol + top-level public API
+- [ ] Coverage calibration experiment
+
+Deferred to v0.7+:
+- Operator/locality-aware extrapolation
+- Lower bounds / escape-hatch taxonomy
+- Sequential design
+- Circuit-family benchmarks
+- Non-Markovian noise
+
+---
+
 ## Success Criteria
 
 The manuscript is ready for arXiv when:
