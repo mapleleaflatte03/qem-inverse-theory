@@ -73,13 +73,13 @@ See `docs/deep_research_implementation_audit.md` for full gap analysis.
 
 Focus: substantive research code, not packaging or release.
 
-- [ ] Bounded Bayesian ZNE with tanh transform + coverage calibration
-- [ ] Chebyshev-basis constrained estimator with Tikhonov penalty
-- [ ] Systematic finite-shot phase diagram (multiple responses, grid)
+- [x] Bounded Bayesian ZNE with tanh transform + coverage calibration
+- [x] Chebyshev-basis constrained estimator with Tikhonov penalty
+- [x] Systematic finite-shot phase diagram (multiple responses, grid)
 - [ ] Formalize help/harm criterion as proposition
-- [ ] Multiple response functions in ambiguity experiments
-- [ ] Estimator protocol + top-level public API
-- [ ] Coverage calibration experiment
+- [x] Multiple response functions in ambiguity experiments
+- [x] Estimator protocol + top-level public API
+- [x] Coverage calibration experiment
 
 Deferred to v0.7+:
 - Operator/locality-aware extrapolation

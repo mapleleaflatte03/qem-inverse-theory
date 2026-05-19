@@ -1,7 +1,7 @@
 """Core data types for ZNE inverse problem analysis."""
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Protocol, runtime_checkable
 
 import numpy as np
 from numpy.typing import NDArray
@@ -39,3 +39,10 @@ class FitResult:
     method: str = ""
     diagnostics: dict[str, Any] = field(default_factory=dict)
     assumptions: list[str] = field(default_factory=list)
+
+
+@runtime_checkable
+class Estimator(Protocol):
+    """Protocol for ZNE estimators."""
+
+    def fit(self, data: ZNEData) -> FitResult: ...

@@ -111,3 +111,28 @@ Do there exist natural circuit/observable structures under which ZNE achieves po
 - Construct candidate structured instances.
 - Test numerically whether these instances exhibit better-than-generic scaling.
 - If promising, attempt rigorous proof for specific cases.
+
+---
+
+## Proposition 3: Help/Harm Decision Criterion (Elementary)
+
+**Status:** Formalizable (elementary MSE decomposition).
+
+**Statement:**
+Let $\hat{f}_{\mathrm{raw}} = y_1$ (measurement at lowest scale) and $\hat{f}_{\mathrm{ZNE}}$ be any ZNE estimator. Define:
+- $\mathrm{MSE}_{\mathrm{raw}} = [f(\lambda_1) - f(0)]^2 + \sigma_1^2$
+- $\mathrm{MSE}_{\mathrm{ZNE}} = \mathrm{Bias}^2_{\mathrm{ZNE}} + \mathrm{Var}_{\mathrm{ZNE}}$
+
+ZNE helps if and only if $\mathrm{MSE}_{\mathrm{ZNE}} < \mathrm{MSE}_{\mathrm{raw}}$.
+
+For a well-specified linear estimator with condition number $\kappa_U$ and uniform shot allocation ($N$ total shots, $n$ points):
+$$\mathrm{Var}_{\mathrm{ZNE}} \approx \kappa_U^2 \cdot \frac{v \cdot n}{N}$$
+
+where $v$ is single-shot variance. The critical shot count below which ZNE harms is:
+$$N^* \approx \frac{\kappa_U^2 \cdot v \cdot n}{[f(\lambda_1) - f(0)]^2 + \sigma_1^2 - \mathrm{Bias}^2_{\mathrm{ZNE}}}$$
+
+**Proof idea:** Direct comparison of MSE expressions. Elementary but useful as a decision criterion.
+
+**Empirical validation:** Experiment 08 confirms the existence of a help/harm boundary that shifts with shot budget and noise strength.
+
+**What this does NOT prove:** It does not determine the optimal estimator, does not account for model selection randomness, and assumes the bias and variance are known (which they are not in practice).
