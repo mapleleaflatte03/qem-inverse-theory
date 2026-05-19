@@ -48,6 +48,17 @@ pdflatex -interaction=nonstopmode main.tex
 
 Expected: `paper/main.pdf` (3+ pages). Citation warnings for unverified entries are expected.
 
+## Build arXiv source package
+
+```bash
+bash scripts/build_arxiv_package.sh
+python scripts/check_arxiv_package.py
+```
+
+Output: `dist/qem-inverse-theory-arxiv-source.zip`
+
+Contains: `main.tex`, `refs.bib`, `main.bbl`, `figures/*.pdf` — flat structure ready for arXiv upload.
+
 ## Smoke check (all-in-one)
 
 ```bash
