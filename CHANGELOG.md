@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.2-arxiv-readiness-hardening
+
+- Resolved cited refs.bib VERIFY blockers (0 VERIFY remaining in bib)
+- Confirmed Miranskyy2026 as arXiv preprint, not yet peer-reviewed
+- Clarified Hadamard1902 page-number note from secondary sources
+- Added non-exponential quadratic response result to manuscript §6
+- Confirmed clean-room arXiv package builds successfully (4 pages, 0 errors)
+- Added `docs/ARXIV_READINESS_v1.2.md`
+- Verdict: ready for arXiv technical report / workshop companion paper
+- Known limitation: not yet full-venue-ready without theorem hardening or broader benchmarks
+- Tests remain 80 passing
+
 ## v1.1-reviewer-rebalanced-manuscript
 
 - Rebalanced manuscript around ambiguity diameter as the central contribution
