@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.9-structured-lower-bound-taxonomy
+
+- Added structured lower-bound / escape-hatch taxonomy
+- Added `StructureDescriptor` dataclass and classification utilities
+- Added `classify_structure()` and `explain_escape_hatch()`
+- Added `docs/structured_lower_bound_taxonomy.md` (6 candidate structure classes)
+- Added `paper/structured_escape_hatches.md` (paper-ready table)
+- Six candidate escape-hatch classes: low support, low depth, symmetry, weak scrambling, bounded smooth response, Bayesian abstention
+- Added tests ensuring no "defeat/overcome lower bounds" language in outputs
+- Tests increased from 74 to 80
+- Known limitation: taxonomy only, not a proven lower-bound theorem; all entries are research directions
+
 ## v0.8-locality-aware-prototype
 
 - Added locality-aware ZNE prototype (`theory/locality.py`, `estimators/locality_aware.py`)
