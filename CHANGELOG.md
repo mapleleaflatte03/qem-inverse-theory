@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.6-core-research-implementation
+
+- Added Chebyshev-basis constrained ZNE with Tikhonov regularization
+- Added bounded Bayesian GP ZNE with tanh output transform
+- Added Estimator protocol and top-level public API exports
+- Added systematic finite-shot phase diagram experiment (3 responses × 4 noise × 5 shots × 5 methods)
+- Added Bayesian coverage calibration experiment (3 responses × 2 noise × 3 shots, 200 trials)
+- Added help/harm proposition note (elementary MSE decomposition)
+- Added estimator diagnostics:
+  - Chebyshev: condition_number_proxy, z0_extrapolation
+  - Bayesian: clipped_observation_count, latent_noise_variance_min/max
+- Added aggregate help/harm summaries by method
+- Added aggregate Bayesian coverage summaries by noise level
+- Tests increased from 41 to 57
+- Known limitation: Bayesian GP with fixed hyperparameters under-covers at high noise (calibration issue, not fundamental)
+
 ## v0.4-arxiv-package-ready
 
 - Added arXiv source package builder (`scripts/build_arxiv_package.sh`)
