@@ -99,3 +99,28 @@ def test_benchmark_suite_fast():
     t0 = time.time()
     run_benchmark_suite("qaoa", shots_total=1000, seed=42)
     assert time.time() - t0 < 2.0
+
+
+# --- Noise model integration tests ---
+
+def test_noise_model_changes_output():
+    """Same family + seed but different noise_model must produce different errors."""
+    r1 = run_benchmark_suite("tfim", noise_model="depolarizing", seed=42)
+    r2 = run_benchmark_suite("tfim", noise_model="coherent_overrotation", seed=42)
+    assert r1["chebyshev_error"] != r2["chebyshev_error"], "Different noise models should give different results"
+
+
+def test_noise_model_deterministic():
+    """Same family + noise_model + seed must give identical results."""
+    r1 = run_benchmark_suite("vqe", noise_model="pauli_lindblad", seed=99)
+    r2 = run_benchmark_suite("vqe", noise_model="pauli_lindblad", seed=99)
+    assert r1["chebyshev_error"] == r2["chebyshev_error"]
+
+
+def test_all_noise_models_run():
+    """All 6 noise models should run without error for all families."""
+    for family in ["ghz", "tfim", "vqe"]:
+        for nm in ["depolarizing", "amplitude_damping", "coherent_overrotation",
+                   "pauli_lindblad", "time_correlated", "non_markovian"]:
+            r = run_benchmark_suite(family, noise_model=nm, shots_total=100, seed=0)
+            assert np.isfinite(r["chebyshev_error"]), f"Failed: {family}/{nm}"

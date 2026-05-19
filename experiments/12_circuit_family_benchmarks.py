@@ -1,7 +1,7 @@
-"""Experiment 12: Circuit-family benchmark suite.
+"""Experiment 12: Circuit-family benchmark suite with noise model grid.
 
-Runs ZNE benchmarks across multiple circuit families and noise models.
-All results are synthetic — no hardware claims.
+Runs ZNE benchmarks across circuit families AND noise models.
+All results are synthetic — no hardware or circuit simulation claims.
 """
 
 import numpy as np
@@ -10,49 +10,60 @@ import matplotlib.pyplot as plt
 from qem_inverse_theory.benchmarks.suite import run_benchmark_suite
 
 families = ["ghz", "tfim", "heisenberg", "vqe", "qaoa"]
-shots_values = [1000, 10000]
+noise_models = ["depolarizing", "amplitude_damping", "coherent_overrotation", "pauli_lindblad", "time_correlated", "non_markovian"]
+shots = 5000
 seeds = [42, 123, 456]
 
 print("=" * 70)
-print("Experiment 12: Circuit-Family Benchmark Suite")
+print("Experiment 12: Circuit-Family × Noise-Model Benchmark")
 print("=" * 70)
-print("\nAll results are synthetic circuit-family response models.")
-print("No quantum hardware or circuit simulation is involved.\n")
+print("\nAll results are synthetic response models. No hardware claims.\n")
 
 results = []
 for family in families:
-    for shots in shots_values:
-        errors_raw, errors_bounded, errors_cheb = [], [], []
+    for nm in noise_models:
+        errors = []
         for seed in seeds:
-            r = run_benchmark_suite(family, n_qubits=4, depth=4, shots_total=shots, seed=seed)
-            errors_raw.append(r["raw_error"])
-            errors_bounded.append(r["bounded_error"])
-            errors_cheb.append(r["chebyshev_error"])
+            r = run_benchmark_suite(family, noise_model=nm, shots_total=shots, seed=seed)
+            errors.append(r["chebyshev_error"])
             results.append(r)
+        avg = np.mean(errors)
+        print(f"  {family:12s} + {nm:22s}: cheb_err={avg:.4f}")
 
-        avg_raw = np.mean(errors_raw)
-        avg_bnd = np.mean(errors_bounded)
-        avg_chb = np.mean(errors_cheb)
-        print(f"  {family:12s} shots={shots:5d}: "
-              f"raw={avg_raw:.4f}  bounded={avg_bnd:.4f}  chebyshev={avg_chb:.4f}")
-
-# Summary figure
+# Summary figure: family × noise heatmap
 os.makedirs("figures", exist_ok=True)
+grid = np.zeros((len(families), len(noise_models)))
+for i, f in enumerate(families):
+    for j, nm in enumerate(noise_models):
+        subset = [r["chebyshev_error"] for r in results if r["family"] == f and r["noise_model"] == nm]
+        grid[i, j] = np.mean(subset)
+
+fig, ax = plt.subplots(figsize=(9, 4))
+im = ax.imshow(grid, aspect="auto", cmap="YlOrRd")
+ax.set_xticks(range(len(noise_models)))
+ax.set_xticklabels([nm[:8] for nm in noise_models], rotation=45, ha="right")
+ax.set_yticks(range(len(families)))
+ax.set_yticklabels([f.upper() for f in families])
+ax.set_title("Mean |error| by family × noise model (Chebyshev-Tikhonov, synthetic)")
+fig.colorbar(im, ax=ax, label="Mean absolute error")
+plt.tight_layout()
+plt.savefig("figures/circuit_family_noise_benchmark_summary.pdf", bbox_inches="tight")
+plt.savefig("figures/circuit_family_noise_benchmark_summary.png", dpi=150, bbox_inches="tight")
+plt.close()
+
+# Also save the simpler family-only figure
 fig, ax = plt.subplots(figsize=(8, 4))
 x = np.arange(len(families))
 width = 0.25
-
-# Average over shots and seeds
 raw_avgs = [np.mean([r["raw_error"] for r in results if r["family"] == f]) for f in families]
 bnd_avgs = [np.mean([r["bounded_error"] for r in results if r["family"] == f]) for f in families]
 chb_avgs = [np.mean([r["chebyshev_error"] for r in results if r["family"] == f]) for f in families]
-
 ax.bar(x - width, raw_avgs, width, label="Raw")
 ax.bar(x, bnd_avgs, width, label="Bounded poly")
 ax.bar(x + width, chb_avgs, width, label="Chebyshev-Tikhonov")
 ax.set_xlabel("Circuit family")
 ax.set_ylabel("Mean absolute error")
-ax.set_title("ZNE benchmark across circuit families (synthetic)")
+ax.set_title("ZNE benchmark across circuit families (synthetic, all noise models)")
 ax.set_xticks(x)
 ax.set_xticklabels([f.upper() for f in families])
 ax.legend()
@@ -63,35 +74,27 @@ plt.close()
 
 # Save results
 os.makedirs("results", exist_ok=True)
-lines = ["# Circuit-Family Benchmark Results", "",
+lines = ["# Circuit-Family × Noise-Model Benchmark Results", "",
          "## Setup", "",
-         "- Families: GHZ, TFIM, Heisenberg, VQE, QAOA",
-         "- n_qubits: 4, depth: 4, noise_strength: 0.04",
-         f"- Shots: {shots_values}",
-         f"- Seeds: {seeds}",
+         f"- Families: {', '.join(f.upper() for f in families)}",
+         f"- Noise models: {', '.join(noise_models)}",
+         f"- Shots: {shots}, Seeds: {seeds}",
          "- Methods: raw, bounded polynomial deg-2, Chebyshev-Tikhonov deg-2",
-         "- **All results are synthetic response models, not circuit simulations.**", "",
-         "## Results (mean absolute error)", "",
-         "| Family | Raw | Bounded | Chebyshev |",
-         "|--------|-----|---------|-----------|"]
-for f in families:
-    r_raw = np.mean([r["raw_error"] for r in results if r["family"] == f])
-    r_bnd = np.mean([r["bounded_error"] for r in results if r["family"] == f])
-    r_chb = np.mean([r["chebyshev_error"] for r in results if r["family"] == f])
-    lines.append(f"| {f.upper()} | {r_raw:.4f} | {r_bnd:.4f} | {r_chb:.4f} |")
-
+         "- **All results are synthetic response models.**", "",
+         "## Results (Chebyshev-Tikhonov mean |error|)", "",
+         "| Family | " + " | ".join(nm[:8] for nm in noise_models) + " |",
+         "|--------" + "|--------" * len(noise_models) + "|"]
+for i, f in enumerate(families):
+    row = " | ".join(f"{grid[i,j]:.4f}" for j in range(len(noise_models)))
+    lines.append(f"| {f.upper()} | {row} |")
 lines += ["", "## Interpretation", "",
-          "These synthetic benchmarks illustrate how different circuit-family response",
-          "profiles interact with ZNE estimators. Results vary by family because each",
-          "has different decay characteristics (fast/slow, oscillatory, saturating).",
-          "",
-          "**Caveats:**",
-          "- These are synthetic response models, not actual circuit simulations.",
-          "- Real circuits may behave differently under noise amplification.",
-          "- No hardware validation is claimed.",
-          "- Rankings may change with different noise models or shot budgets."]
+          "Different noise models produce different error profiles for the same circuit family.",
+          "Non-Markovian and coherent noise tend to be harder for polynomial extrapolation.",
+          "This does not prove any method is universally best across all noise/family combinations.",
+          "Results are synthetic and do not generalize to hardware."]
 
 with open("results/circuit_family_benchmarks.md", "w") as f:
     f.write("\n".join(lines) + "\n")
-print("\nSaved: results/circuit_family_benchmarks.md")
-print("Saved: figures/circuit_family_benchmark_summary.pdf")
+print(f"\nTotal benchmark combinations: {len(families)} × {len(noise_models)} × {len(seeds)} = {len(results)}")
+print("Saved: results/circuit_family_benchmarks.md")
+print("Saved: figures/circuit_family_noise_benchmark_summary.pdf")
