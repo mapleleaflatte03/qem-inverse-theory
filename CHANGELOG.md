@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.3-theory-hardening
+
+- Added Proposition 3: finite-shot help/harm threshold
+- Formalized when ZNE helps under a stylized bias-variance model: ΔB² > ΔV/N
+- Derived critical shot count N* = ΔV/ΔB²
+- Connected criterion to phase-diagram behavior using cautious wording ("explains", not "proves")
+- Updated theorem_sketches.md: Proposition 3 marked proven under stylized assumptions
+- Updated claim_ledger.md with allowed claim and explicit limitations
+- Known limitation: Proposition 3 is model-conditional, not a universal ZNE theorem
+- Tests remain 80 passing; LaTeX builds cleanly
+
 ## v1.2-arxiv-readiness-hardening
 
 - Resolved cited refs.bib VERIFY blockers (0 VERIFY remaining in bib)
