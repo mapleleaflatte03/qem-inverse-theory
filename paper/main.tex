@@ -22,13 +22,21 @@
 \date{\today}
 
 \begin{abstract}
-Zero-noise extrapolation (ZNE) is one of the most widely used quantum error mitigation techniques, yet its theoretical foundations as an inference problem remain underdeveloped.
-We formalize ZNE as a constrained inverse problem: recovering an unobserved noiseless expectation value from finite, noisy measurements at amplified noise levels.
-We show that without function-class restrictions, the zero-noise limit is not identifiable from any finite set of observations (Proposition~\ref{prop:nonident}).
-We establish that spectral bounds from the observable's eigenvalues provide physically valid constraints, and that post-hoc projection of a scalar estimate onto these bounds cannot increase pointwise error when the true value lies within the spectral interval (Proposition~\ref{prop:spectral}).
-We introduce the \emph{ambiguity diameter}---the range of zero-noise values consistent with data, function class, and physical constraints---as a quantitative measure of identifiability.
-Synthetic experiments illustrate that physical bounds reduce ambiguity diameter by up to $6.2\times$ in a degree-4 polynomial experiment at tolerance $\delta = 0.1$, that identifiability depends on the ratio of data points to model complexity rather than sample size alone, and that a bias--ambiguity tradeoff governs model selection for ZNE.
-All numerical results are synthetic and intended to illustrate the identifiability framework, not to claim superiority of any particular estimator.
+Zero-noise extrapolation (ZNE) is widely used for quantum error mitigation, yet it is typically applied as ad hoc curve fitting without formal analysis of when the zero-noise limit can be reliably inferred.
+We reframe ZNE as a constrained inverse problem and study its identifiability: given $n$ noisy measurements at amplified noise levels, a polynomial function class of degree $d$, and spectral bounds from the observable, when is the noiseless expectation value uniquely determined?
+
+We prove two foundational results.
+First, without function-class restrictions, the zero-noise limit is not identifiable from any finite data set (Proposition~\ref{prop:nonident}).
+Second, spectral bounds from the observable's eigenvalues are always valid, and post-hoc projection onto these bounds cannot increase pointwise estimation error (Proposition~\ref{prop:spectral}).
+
+We introduce the \emph{ambiguity diameter}---the range of zero-noise values consistent with data, model, and constraints---as a quantitative identifiability metric.
+Synthetic experiments reveal three structural findings:
+(i) physical bounds reduce ambiguity most in the high-uncertainty regime (up to $6.2\times$ at $\delta = 0.1$ in a specific degree-4 experiment);
+(ii) identifiability depends on the overdetermination ratio $n/(d+1)$, not sample size alone;
+(iii) a bias--ambiguity tradeoff governs model selection, since restrictive models identify $f(0)$ tightly but to a potentially biased value.
+
+These results characterize the mathematical structure of ZNE as inference.
+They do not claim superiority of any particular estimator, do not address hardware performance, and do not circumvent established QEM lower bounds.
 \end{abstract}
 
 \maketitle
@@ -59,13 +67,20 @@ Recent work on QEM lower bounds~\cite{Takagi2022,Quek2024} has established that 
 We do not claim to circumvent these bounds.
 Instead, we study the mathematical structure of the ZNE inference problem to understand when and why extrapolation can be well-posed under physical constraints.
 
-\textbf{Contributions.} We formalize ZNE as a constrained inverse problem (\cref{sec:inverse}), prove that the zero-noise limit is not identifiable without function-class assumptions (\cref{sec:nonident}), establish spectral admissibility constraints (\cref{sec:spectral}), introduce the ambiguity diameter as a quantitative identifiability metric, and present synthetic experiments illustrating degree sensitivity, tolerance sensitivity, sample-size effects, and the bias--ambiguity tradeoff (\cref{sec:experiments}).
+\textbf{Contributions.}
+\begin{enumerate}
+\item We formalize ZNE as a constrained inverse problem with explicit definitions for the ambiguity set, ambiguity diameter, and condition number (\cref{sec:inverse}).
+\item We prove that without function-class restrictions, $f(0)$ is not identifiable from finite data (\cref{sec:nonident}).
+\item We prove that spectral bounds are always valid and that scalar projection cannot increase error (\cref{sec:spectral}).
+\item We introduce the ambiguity diameter as a computable identifiability metric and demonstrate its behavior across four experimental axes (\cref{sec:experiments}).
+\end{enumerate}
 
 \textbf{Related work.}
 ZNE was introduced independently by Li and Benjamin~\cite{LiBenjamin2017} and Temme et al.~\cite{Temme2017}, with digital implementations via unitary folding developed by Giurgica-Tiron et al.~\cite{GiurgicaTiron2020}.
 Fundamental limitations of quantum error mitigation have been established by Takagi et al.~\cite{Takagi2022} and Quek et al.~\cite{Quek2024}, showing exponential sampling overhead in the worst case.
-Miranskyy et al.~\cite{Miranskyy2026} recently proposed physically bounded ZNE models with empirical benchmarking on large circuit sets (not yet peer-reviewed).
-Our focus is complementary: rather than proposing a new estimator or benchmarking existing ones, we study the inverse-problem structure of ZNE, asking when the zero-noise limit is identifiable from finite noisy observations and how physical constraints reduce the admissible set of solutions.
+Miranskyy et al.~\cite{Miranskyy2026} recently proposed physically bounded ZNE models with empirical benchmarking across 180,000 circuit configurations (arXiv preprint, not yet peer-reviewed).
+Their work demonstrates the practical value of enforcing physical bounds; our work is complementary in that we study the \emph{theoretical structure} underlying such bounds---specifically, when and why they restore identifiability.
+We do not propose a new estimator; we characterize the inference problem that all ZNE estimators implicitly solve.
 
 %% ============================================================
 \section{ZNE as a Constrained Inverse Problem}
@@ -221,9 +236,10 @@ Three constraint sets are compared: no bounds $[-10, 10]$, Pauli $[-1, 1]$, and 
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{../figures/ambiguity_degree_sweep.pdf}
-\caption{Ambiguity diameter vs polynomial degree for $n=5$, $\delta=0.01$.
-At low degree, the overdetermined system constrains $f(0)$ regardless of bounds.
-At degree $d = n-1 = 4$, bounds reduce ambiguity from 0.62 to 0.51 (18\%).}
+\caption{Ambiguity diameter vs polynomial degree ($n=5$, $\delta=0.01$, exponential response).
+Physical bounds reduce ambiguity only in the interpolation regime ($d = n-1 = 4$): from 0.62 to 0.51.
+At lower degrees, the overdetermined system alone constrains $f(0)$.
+This does not prove that bounded estimators are more accurate---it shows when bounds affect the \emph{identifiability} of $f(0)$.}
 \label{fig:degree_sweep}
 \end{figure}
 
@@ -235,9 +251,10 @@ At degree 4 (the interpolation regime, $d = n-1$), the polynomial class is flexi
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{../figures/delta_sensitivity.pdf}
-\caption{Ambiguity diameter vs tolerance $\delta$ for degree 4, $n=5$.
-Without bounds, ambiguity grows linearly with $\delta$.
-Probability bounds cap ambiguity at 1.0 regardless of $\delta$.}
+\caption{Ambiguity diameter vs tolerance $\delta$ ($d=4$, $n=5$, exponential response).
+Without bounds, ambiguity grows linearly with $\delta$; probability bounds $[0,1]$ cap it at 1.0.
+The $6.2\times$ reduction at $\delta = 0.1$ is specific to this configuration.
+This demonstrates that bounds become more important as measurement uncertainty increases, but does not prove they reduce estimation error.}
 \label{fig:delta}
 \end{figure}
 
@@ -250,9 +267,11 @@ Physical bounds become increasingly important as measurement uncertainty grows.
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{../figures/n_sensitivity_interpolation_vs_fixed.pdf}
-\caption{Ambiguity vs $n$ in two regimes.
-Interpolation ($d = n-1$): ambiguity grows with $n$ because each new point adds a free parameter.
-Fixed degree ($d = 2$): ambiguity shrinks as the system becomes increasingly overdetermined.}
+\caption{Ambiguity diameter vs number of scale factors $n$ ($\delta=0.01$, unbounded, exponential response).
+In the interpolation regime ($d = n-1$), ambiguity grows with $n$ because model complexity grows proportionally.
+With fixed degree ($d = 2$), additional data reduces ambiguity by overdetermining the system.
+This illustrates that identifiability depends on the ratio $n/(d+1)$, not $n$ alone.
+It does not prove that fixed-degree models are preferable (they may introduce bias).}
 \label{fig:n_sensitivity}
 \end{figure}
 
@@ -268,9 +287,10 @@ This illustrates that identifiability depends not on $n$ alone, but on the ratio
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{../figures/bias_ambiguity_tradeoff.pdf}
-\caption{Bias--ambiguity tradeoff for $n=7$, $\delta=0.01$, bounds $[0,1]$.
-Lower degree reduces ambiguity but increases misspecification bias.
-The optimal degree balances these competing objectives.}
+\caption{Bias--ambiguity tradeoff ($n=7$, $\delta=0.01$, bounds $[0,1]$, exponential response).
+Lower degree reduces ambiguity but increases misspecification bias; higher degree does the reverse.
+This demonstrates that small ambiguity does not imply small error---a tightly identified value may be wrong.
+It does not determine which degree is optimal in general.}
 \label{fig:tradeoff}
 \end{figure}
 
