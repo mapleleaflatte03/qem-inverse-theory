@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.2-manuscript-draft
+
+Expanded LaTeX manuscript to a readable 5-page draft.
+
+### Manuscript
+- Full Introduction with inverse-problem motivation and 5 stated contributions
+- Related-work paragraph positioning against ZNE literature and QEM lower bounds
+- Complete Section 2 with all formal definitions (observation model, function class, ambiguity set, condition number)
+- Full proofs for Propositions 1 and 2 with interpretation caveats
+- Expanded experiments section with 4 subsections and all numeric results
+- Discussion section with 4 key insights
+- Limitations section (8 items) with reproducibility note
+- 6 verified citations + 1 arXiv preprint (Miranskyy2026, marked not peer-reviewed)
+
+### Infrastructure
+- Strengthened manuscript audit (`scripts/check_manuscript_length.py`)
+- Claim safety checker allows negated forbidden phrases
+- Smoke check includes manuscript metrics
+- 41 tests passing
+
+### Limitations (unchanged)
+- Synthetic data only
+- Polynomial function classes only
+- No hardware validation
+- No peer review
+- No proof that constrained optimization improves MSE
+
 ## v0.1-research-scaffold
 
 Initial research scaffold for studying ZNE as a constrained quantum inverse problem.

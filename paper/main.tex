@@ -61,6 +61,12 @@ Instead, we study the mathematical structure of the ZNE inference problem to und
 
 \textbf{Contributions.} We formalize ZNE as a constrained inverse problem (\cref{sec:inverse}), prove that the zero-noise limit is not identifiable without function-class assumptions (\cref{sec:nonident}), establish spectral admissibility constraints (\cref{sec:spectral}), introduce the ambiguity diameter as a quantitative identifiability metric, and present synthetic experiments illustrating degree sensitivity, tolerance sensitivity, sample-size effects, and the bias--ambiguity tradeoff (\cref{sec:experiments}).
 
+\textbf{Related work.}
+ZNE was introduced independently by Li and Benjamin~\cite{LiBenjamin2017} and Temme et al.~\cite{Temme2017}, with digital implementations via unitary folding developed by Giurgica-Tiron et al.~\cite{GiurgicaTiron2020}.
+Fundamental limitations of quantum error mitigation have been established by Takagi et al.~\cite{Takagi2022} and Quek et al.~\cite{Quek2024}, showing exponential sampling overhead in the worst case.
+Miranskyy et al.~\cite{Miranskyy2026} recently proposed physically bounded ZNE models with empirical benchmarking on large circuit sets (not yet peer-reviewed).
+Our focus is complementary: rather than proposing a new estimator or benchmarking existing ones, we study the inverse-problem structure of ZNE, asking when the zero-noise limit is identifiable from finite noisy observations and how physical constraints reduce the admissible set of solutions.
+
 %% ============================================================
 \section{ZNE as a Constrained Inverse Problem}
 \label{sec:inverse}
