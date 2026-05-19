@@ -8,7 +8,6 @@
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{corollary}{Corollary}
-\newtheorem{conjecture}{Conjecture}
 \newtheorem{definition}{Definition}
 
 \begin{document}
@@ -22,24 +21,11 @@
 \date{\today}
 
 \begin{abstract}
-We reframe zero-noise extrapolation (ZNE) as a constrained inverse problem and study its identifiability, stability, and finite-shot behavior.
-We prove that without function-class restrictions, the zero-noise limit is not identifiable from finite data (Proposition~\ref{prop:nonident}), and that spectral bounds from observable eigenvalues provide valid constraints whose projection cannot increase pointwise error (Proposition~\ref{prop:spectral}).
-We introduce the \emph{ambiguity diameter} as a computable identifiability metric and demonstrate its dependence on model complexity, measurement tolerance, and physical bounds.
-
-Beyond the foundational framework, we present a research program spanning five directions:
-(i) regularized constrained estimators (Chebyshev--Tikhonov basis with physical bounds);
-(ii) finite-shot help/harm phase diagrams identifying when mitigation helps versus harms;
-(iii) bounded Bayesian ZNE with tanh output transform and coverage calibration;
-(iv) sequential measurement design via posterior variance minimization;
-(v) a structured escape-hatch taxonomy for QEM lower bounds.
-
-We report both positive and negative findings.
-Sequential design achieves 24\% MSE reduction in the ZNE-relevant regime ($\lambda \geq 1$).
-Bayesian intervals are well-calibrated at low noise (89\% empirical for 90\% nominal) but under-cover at high noise (70\%).
-A locality-aware regularization heuristic currently \emph{worsens} performance by 1--11\%, motivating calibrated alternatives.
-
-All results are synthetic.
-We do not claim hardware validation, universal estimator superiority, or circumvention of QEM lower bounds.
+We reframe zero-noise extrapolation (ZNE) as a constrained inverse problem---recovering an unobserved noiseless expectation from finite noisy measurements---and introduce the \emph{ambiguity diameter}, a computable metric quantifying how tightly the zero-noise limit is determined by data, function class, and physical constraints.
+We show via elementary interpolation that without function-class restrictions, the zero-noise limit is not identifiable (Proposition~\ref{prop:nonident}), and that spectral projection cannot increase pointwise error (Proposition~\ref{prop:spectral}).
+Synthetic experiments illustrate that physical bounds reduce ambiguity by up to $6.2\times$ at high tolerance, that identifiability depends on the overdetermination ratio $n/(d+1)$, and that a bias--ambiguity tradeoff governs model selection.
+We further explore finite-shot help/harm phase diagrams, bounded Bayesian ZNE with coverage calibration, sequential measurement design (24\% MSE reduction in one synthetic setup with $\lambda \geq 1$), and a locality-aware prototype that currently worsens performance (negative result).
+All results are synthetic; we do not claim hardware validation, universal superiority, or circumvention of QEM lower bounds~\cite{Takagi2022,Quek2024}.
 \end{abstract}
 
 \maketitle
@@ -51,81 +37,119 @@ We do not claim hardware validation, universal estimator superiority, or circumv
 Zero-noise extrapolation (ZNE) mitigates errors on noisy quantum processors by measuring expectation values at amplified noise levels and extrapolating to the zero-noise limit~\cite{LiBenjamin2017,Temme2017,GiurgicaTiron2020}.
 Despite widespread use, ZNE is typically applied as ad hoc curve fitting without formal analysis of when the zero-noise limit can be reliably inferred.
 
-We reframe ZNE as a \textbf{constrained inverse problem}~\cite{Hadamard1902} and ask: under what physical and statistical conditions is the zero-noise limit identifiable from finite noisy observations?
-This perspective reveals that identifiability depends on the interaction between function class, physical constraints, measurement uncertainty, and problem structure.
+We reframe ZNE as a \textbf{constrained inverse problem} and ask: under what conditions is the zero-noise limit identifiable from finite noisy observations?
+In the sense of Hadamard~\cite{Hadamard1902}, an inverse problem is well-posed if its solution exists, is unique, and depends continuously on the data.
+ZNE generically fails uniqueness and stability; physical constraints and function-class restrictions are the tools available to restore partial well-posedness.
 
-Recent QEM lower bounds~\cite{Takagi2022,Quek2024} establish exponential sampling overhead for generic mitigation.
-We do not claim to circumvent these results.
-Instead, we study the mathematical structure of ZNE inference and identify candidate structural assumptions that may place specific instances outside the pessimistic generic regime.
+This is a \textbf{framework paper with supporting synthetic experiments}.
+We develop diagnostic tools (ambiguity diameter, help/harm phase diagrams, coverage calibration) and explore five directions, reporting both positive and negative findings.
+We do not propose a production estimator or claim to circumvent QEM lower bounds~\cite{Takagi2022,Quek2024}.
 
-\textbf{Contributions.}
-\begin{enumerate}
-\item Constrained inverse-problem formulation with ambiguity diameter metric (\cref{sec:inverse}).
-\item Non-identifiability proposition and spectral admissibility (\cref{sec:nonident,sec:spectral}).
-\item Regularized estimators: bounded polynomial and Chebyshev--Tikhonov (\cref{sec:estimators}).
-\item Finite-shot help/harm phase diagrams (\cref{sec:phase}).
-\item Bounded Bayesian ZNE with calibration analysis (\cref{sec:bayesian}).
-\item Sequential measurement design prototype (\cref{sec:sequential}).
-\item Locality-aware prototype with documented negative result (\cref{sec:locality}).
-\item Structured escape-hatch taxonomy (\cref{sec:taxonomy}).
-\end{enumerate}
+\textbf{Contributions:}
+(1) ambiguity diameter as identifiability metric;
+(2) non-identifiability and spectral admissibility propositions;
+(3) regularized constrained estimators;
+(4) finite-shot help/harm diagnostics;
+(5) bounded Bayesian ZNE with calibration;
+(6) sequential design prototype;
+(7) locality-aware negative result;
+(8) structured escape-hatch taxonomy.
 
 \textbf{Related work.}
-Miranskyy et al.~\cite{Miranskyy2026} proposed physically bounded ZNE models with empirical benchmarking (arXiv preprint, not yet peer-reviewed).
-Our work is complementary: we study the theoretical structure underlying such bounds rather than proposing a production estimator.
+Miranskyy et al.~\cite{Miranskyy2026} proposed physically bounded ZNE models with empirical benchmarking across 180,000 circuits (arXiv preprint, not yet peer-reviewed).
+Their contribution is an \emph{estimator}: a bounded curve-fitting method that prevents unphysical predictions.
+Our contribution is an \emph{analysis of the inference problem itself}: we study when and why the zero-noise limit is identifiable, how ambiguity depends on model complexity and constraints, and where mitigation helps versus harms.
+These are complementary perspectives---one engineering, one mathematical---and neither subsumes the other.
 
 %% ============================================================
-\section{ZNE as a Constrained Inverse Problem}
+\section{Framework: ZNE as Constrained Inverse Problem}
 \label{sec:inverse}
 
-The observation model is $y_i = f(\lambda_i) + \varepsilon_i$ for $i=1,\ldots,n$, where $\lambda_i > 0$ are fixed scale factors and $f(0)$ is the extrapolation target.
+\subsection{Observation model and design}
 
-\begin{definition}[Ambiguity set]
-$\mathcal{A}(\mathbf{y}, \mathcal{F}, \mathcal{C}, \delta) = \{ f(0) \mid f \in \mathcal{F},\, f(0) \in \mathcal{C},\, \|f(\boldsymbol{\lambda}) - \mathbf{y}\|_\infty \leq \delta \}$
+The observation model is $y_i = f(\lambda_i) + \varepsilon_i$ for $i=1,\ldots,n$, where $\lambda_i > 0$ are fixed, known scale factors (chosen by the experimenter via unitary folding), $f(\lambda) = \mathrm{Tr}[\mathcal{E}_\lambda(\rho) O]$ is the noise response, and $\varepsilon_i$ is shot noise with variance $\sigma_i^2$.
+The target $f(0)$ is never observed.
+
+\subsection{Function class and constraints}
+
+\begin{definition}[Function class]
+$\mathcal{F}$ is the set of admissible response functions (e.g., polynomials $\mathcal{P}_d$ of degree $\leq d$).
+The choice of $\mathcal{F}$ is an assumption, not a consequence of data.
 \end{definition}
 
-The ambiguity diameter $\mathrm{diam}(\mathcal{A})$ measures identifiability: zero diameter means $f(0)$ is uniquely determined.
+\begin{definition}[Physical constraint set]
+For observable $O$ with eigenvalues $\{\mu_j\}$: $\mathcal{C} = [\mu_{\min}, \mu_{\max}]$.
+\end{definition}
+
+\subsection{Ambiguity set and diameter}
+
+\begin{definition}[Ambiguity set]
+Given tolerance $\delta \geq 0$ (representing measurement uncertainty):
+\begin{equation}
+\mathcal{A}(\mathbf{y}, \mathcal{F}, \mathcal{C}, \delta) = \left\{ f(0) \;\middle|\; f \in \mathcal{F},\, f(0) \in \mathcal{C},\, \|f(\boldsymbol{\lambda}) - \mathbf{y}\|_\infty \leq \delta \right\}
+\end{equation}
+The \textbf{ambiguity diameter} $\mathrm{diam}(\mathcal{A}) = \sup\mathcal{A} - \inf\mathcal{A}$ measures identifiability.
+\end{definition}
+
+We compute $\mathrm{diam}(\mathcal{A})$ via linear programming (minimize/maximize $f(0)$ over feasible polynomial coefficients).
 
 %% ============================================================
-\section{Non-Identifiability Without Assumptions}
+\section{Identifiability Results}
 \label{sec:nonident}
 
 \begin{proposition}[Non-identifiability]
 \label{prop:nonident}
-For any $n$ observations and any target $t \in \mathbb{R}$, there exists a degree-$n$ polynomial matching the data with $p(0) = t$.
+For any $n$ observations at distinct $\lambda_i > 0$ and any target $t \in \mathbb{R}$, there exists a degree-$n$ polynomial with $p(\lambda_i) = y_i$ and $p(0) = t$.
 \end{proposition}
 \begin{proof}
-Lagrange interpolation on $n+1$ distinct points $\{0, \lambda_1, \ldots, \lambda_n\}$.
+Lagrange interpolation on $\{0, \lambda_1, \ldots, \lambda_n\}$ ($n+1$ distinct points).
 \end{proof}
 
-%% ============================================================
-\section{Physical Admissibility}
-\label{sec:spectral}
+\textbf{Interpretation:} Without restricting $\mathcal{F}$ or imposing $\mathcal{C}$, ZNE is undetermined.
+This motivates studying which restrictions restore identifiability.
+It does not claim practical ZNE always fails---in practice, low-degree models and physical bounds apply.
 
 \begin{proposition}[Spectral validity]
 \label{prop:spectral}
 For Hermitian $O$ with eigenvalues $\mu_1,\ldots,\mu_m$ and any state $\rho$: $\mu_{\min} \leq \mathrm{Tr}[\rho O] \leq \mu_{\max}$.
 \end{proposition}
-\begin{proof}
-$\mathrm{Tr}[\rho O] = \sum_j \mu_j p_j$ with $p_j \geq 0$, $\sum p_j = 1$.
-\end{proof}
 
 \begin{corollary}
-Post-hoc projection onto $[\mu_{\min}, \mu_{\max}]$ cannot increase pointwise error.
+Post-hoc projection onto $[\mu_{\min}, \mu_{\max}]$ cannot increase pointwise error when the true value lies within bounds.
+This does \emph{not} imply constrained optimization always reduces MSE.
 \end{corollary}
 
-This does \emph{not} imply constrained optimization always reduces MSE.
+%% ============================================================
+\section{Ambiguity Diameter Experiments}
+\label{sec:ambiguity}
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{../figures/ambiguity_degree_sweep.pdf}
+\caption{Ambiguity diameter vs polynomial degree ($n=5$, $\delta=0.01$, exponential response).
+Physical bounds reduce ambiguity only in the interpolation regime ($d = n-1$).
+This illustrates when bounds affect identifiability, not estimator accuracy.}
+\label{fig:degree}
+\end{figure}
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{../figures/bias_ambiguity_tradeoff.pdf}
+\caption{Bias--ambiguity tradeoff ($n=7$, $\delta=0.01$, bounds $[0,1]$).
+Lower degree reduces ambiguity but increases misspecification bias.
+Small ambiguity does not imply small error if the model is wrong.}
+\label{fig:tradeoff}
+\end{figure}
+
+\Cref{fig:degree} shows that physical bounds matter most when the function class is flexible ($d \geq n-1$).
+At $\delta = 0.1$, probability bounds reduce ambiguity from 6.2 to 1.0 ($6.2\times$) in this specific synthetic configuration.
+\Cref{fig:tradeoff} reveals the fundamental tension: identifiability alone is not accuracy.
 
 %% ============================================================
-\section{Regularized Constrained Estimators}
+\section{Regularized Estimators}
 \label{sec:estimators}
 
-We implement two constrained estimators:
-(i) bounded polynomial via L-BFGS-B with $f(0) \in [a,b]$;
-(ii) Chebyshev--Tikhonov: Chebyshev basis expansion with Tikhonov penalty $\lambda \|\mathbf{c}\|^2$ and SLSQP-enforced bounds.
-
-The Chebyshev basis maps observed scales to $[-1,1]$; the extrapolation point $\lambda=0$ maps to $z_0 < -1$ (genuine extrapolation outside the basis domain).
-A condition-number proxy $\kappa = \|\mathbf{e}_0^\top \Phi^+\|_1$ quantifies noise amplification.
+We implement bounded polynomial (L-BFGS-B) and Chebyshev--Tikhonov (SLSQP with penalty $\lambda\|\mathbf{c}\|^2$) estimators.
+The Chebyshev basis maps scales to $[-1,1]$; extrapolation to $\lambda=0$ maps to $z_0 < -1$.
+The condition-number proxy $\kappa = \|\mathbf{e}_0^\top \Phi^+\|_1$ quantifies noise amplification at the extrapolation point.
 
 %% ============================================================
 \section{Finite-Shot Help/Harm Phase Diagrams}
@@ -133,118 +157,106 @@ A condition-number proxy $\kappa = \|\mathbf{e}_0^\top \Phi^+\|_1$ quantifies no
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{../figures/systematic_phase_diagram.pdf}
-\caption{Help/harm phase diagram for bounded polynomial ZNE vs raw estimation (exponential response, synthetic).
-Blue = mitigation helps; red = mitigation harms.
-At low shots and low noise, variance amplification makes ZNE harmful.
-This does not prove any method is universally superior.}
+\caption{Help/harm phase diagram: bounded polynomial vs raw (exponential response, synthetic, 50 trials/cell).
+Blue = helps; red = harms.
+This does not establish universal method superiority.}
 \label{fig:phase}
 \end{figure}
 
-We compare five methods across 3 response functions, 4 noise levels, and 5 shot budgets (50 trials each).
-Bounded polynomial ZNE helps in 16/20 cells (exponential response), with average $\log_{10}(\mathrm{MSE}_{\mathrm{raw}}/\mathrm{MSE}_{\mathrm{method}}) = +0.57$.
-The Bayesian GP with fixed hyperparameters harms in 13/20 cells, illustrating that sophisticated methods can underperform without calibration.
+\begin{table}[b]
+\caption{Method comparison (exponential response, synthetic). Help cells out of 20 total (4 noise $\times$ 5 shot levels).}
+\label{tab:methods}
+\begin{tabular}{lcc}
+\toprule
+Method & Avg $\log_{10}$ ratio & Help/Harm \\
+\midrule
+Polynomial deg-2 & $+0.56$ & 16/4 \\
+Bounded poly deg-2 & $+0.57$ & 16/4 \\
+Chebyshev--Tikhonov & $+0.57$ & 16/4 \\
+Bayesian GP (fixed) & $-0.28$ & 4/13 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the exponential response (\cref{fig:phase}, \cref{tab:methods}), polynomial-based methods help in 16/20 cells.
+The Bayesian GP with fixed hyperparameters harms in 13/20 cells---illustrating that sophisticated methods can underperform without calibration.
+Other response functions may yield different rankings.
 
 %% ============================================================
-\section{Bayesian Bounded ZNE and Calibration}
+\section{Bayesian Bounded ZNE}
 \label{sec:bayesian}
 
-We implement a GP on latent $g(\lambda)$ with $f(\lambda) = \mathrm{mid} + r \cdot \tanh(g(\lambda))$, guaranteeing $f \in (a,b)$.
-Posterior at $\lambda=0$ is propagated via the delta method.
+We place a GP prior on latent $g(\lambda)$ with $f(\lambda) = \mathrm{mid} + r \cdot \tanh(g(\lambda))$, guaranteeing $f \in (a,b)$.
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{../figures/bayesian_coverage.pdf}
-\caption{Bayesian credible interval calibration.
-At low noise (0.10), 90\% intervals achieve 89\% empirical coverage.
-At high noise (0.25), coverage drops to 70\%---a calibration limitation of fixed hyperparameters, not a fundamental failure.}
+\caption{Coverage calibration. At low noise, 90\% intervals achieve 89\% empirical coverage.
+At high noise, coverage drops to 70\%---a calibration limitation, not a fundamental failure.}
 \label{fig:coverage}
 \end{figure}
 
-Marginal likelihood optimization improves NLL but does not fully resolve high-noise undercoverage.
-This is an honest negative finding: the method needs further calibration work.
+Marginal likelihood optimization improves NLL but does not fully resolve high-noise undercoverage (\cref{fig:coverage}).
 
 %% ============================================================
 \section{Sequential Measurement Design}
 \label{sec:sequential}
 
-We implement greedy one-step lookahead: select the next scale factor minimizing posterior variance at $\lambda=0$.
+Greedy one-step lookahead selects the next $\lambda$ minimizing posterior variance at $\lambda=0$.
 
-With candidates restricted to $\lambda \geq 1$ (standard ZNE regime), sequential design achieves 24.3\% MSE reduction versus static 5-point design in the synthetic exponential setup.
-The algorithm selects $\lambda = 1.0$ and $\lambda = 1.75$---low-noise points most informative for extrapolation.
-
-Allowing $\lambda < 1$ (non-standard, synthetic only) gives 66\% improvement but is not applicable to hardware ZNE where noise is amplified ($\lambda \geq 1$).
-
-%% ============================================================
-\section{Locality-Aware Prototype: A Negative Result}
-\label{sec:locality}
-
-We test whether observable support size can guide regularization strength.
-A heuristic maps support size to Tikhonov $\lambda$ via a locality envelope proxy.
-
-\textbf{Result:} The heuristic \emph{worsens} MSE by 1--11\% across all tested observables.
-The recommended $\lambda \approx 0.07$ is $\sim$70$\times$ larger than the fixed baseline (0.001), causing over-regularization.
-
-This motivates calibrated locality mappings or commutator-derived envelopes (future work).
-It does not mean locality-aware ZNE is impossible---only that the current heuristic is too aggressive.
-
-%% ============================================================
-\section{Structured Escape-Hatch Taxonomy}
-\label{sec:taxonomy}
-
-Generic QEM lower bounds apply to worst-case circuits.
-We identify six candidate structural assumptions that may place specific instances outside the pessimistic regime:
-
-\begin{center}
-\begin{tabular}{ll}
+\begin{table}[b]
+\caption{Sequential design comparison (synthetic exponential, 50 trials).}
+\label{tab:sequential}
+\begin{tabular}{lcc}
 \toprule
-Structure & Possible benefit \\
+Strategy & MSE & vs Static \\
 \midrule
-Low support ($k \ll n$) & Effective dimension $\sim k$ \\
-Low depth & Smoother noise response \\
-Symmetry & Reduced Hilbert space \\
-Weak scrambling & Structured extrapolation \\
-Smooth response class & Constrained ambiguity \\
-Bayesian abstention & Avoid harmful mitigation \\
+Static 5-point & 0.0202 & --- \\
+Sequential $\lambda \geq 1$ & 0.0153 & $-24\%$ \\
+Sequential $\lambda \geq 0.5$ (non-standard) & 0.0068 & $-66\%$ \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
 
-These are \textbf{research directions, not results}.
-No theorem proves any structure achieves polynomial-cost mitigation.
+In one synthetic exponential setup (\cref{tab:sequential}), sequential design with $\lambda \geq 1$ reduces MSE by 24\%.
+The $\lambda < 1$ result is synthetic and not applicable to standard ZNE (where noise is amplified, $\lambda \geq 1$).
 
 %% ============================================================
-\section{Limitations and Non-Claims}
+\section{Locality-Aware Prototype: Negative Result}
+\label{sec:locality}
+
+A heuristic mapping support size to Tikhonov $\lambda$ via a locality envelope proxy \emph{worsens} MSE by 1--11\%.
+The recommended $\lambda \approx 0.07$ over-regularizes relative to the baseline (0.001).
+This motivates calibrated mappings or commutator-derived envelopes, but does not mean locality-aware ZNE is impossible.
+
+%% ============================================================
+\section{Limitations, Non-Claims, and Future Directions}
 \label{sec:limitations}
 
-\begin{itemize}
-\item All results are synthetic. No quantum hardware is involved.
-\item We do not claim any estimator is universally superior.
-\item We do not defeat, circumvent, or overcome QEM lower bounds.
-\item The locality-aware heuristic currently harms performance.
-\item Bayesian intervals are not calibrated at high noise.
-\item Sequential design is greedy one-step, not globally optimal.
-\item The escape-hatch taxonomy is not theorem-backed.
-\item Some citations are pending final verification.
-\end{itemize}
+\textbf{Limitations:}
+All results are synthetic.
+We do not claim universal superiority, hardware validation, or circumvention of QEM lower bounds.
+The locality heuristic harms performance.
+Bayesian intervals are uncalibrated at high noise.
+Sequential design is greedy, not optimal.
 
-\textbf{Reproducibility.}
-All experiments and figures are reproducible via \texttt{bash scripts/smoke\_check.sh}.
-The repository passes 80 automated tests at v0.9.
+\textbf{Structured escape hatches (future directions):}
+We identify six candidate structures (low support, low depth, symmetry, weak scrambling, smooth response, Bayesian abstention) that may place instances outside generic lower-bound pessimism.
+These are research directions, not results; no theorem proves any achieves polynomial-cost mitigation.
+
+\textbf{Reproducibility:}
+All code, experiments, and figures are available at the source repository with 80 automated tests.
 
 %% ============================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have presented ZNE as a constrained inverse problem and developed a research program spanning identifiability theory, regularized estimation, Bayesian uncertainty quantification, sequential design, and structured escape-hatch analysis.
-
-The key insight is that identifiability---whether $f(0)$ can be reliably inferred---depends on the interaction between function class, physical constraints, and measurement budget, not on any single estimator choice.
-
-We report both successes (ambiguity reduction via bounds, 24\% MSE improvement from sequential design, calibrated Bayesian intervals at low noise) and failures (locality heuristic over-regularizes, Bayesian undercoverage at high noise).
-Both types of findings advance understanding of when and why ZNE works.
-
-Future work includes rigorous risk bounds, commutator-derived locality envelopes, circuit-family benchmarks, and eventual hardware evaluation.
+Our analysis suggests that ZNE identifiability depends on the interaction between function class, physical constraints, and measurement budget.
+We report both successes (ambiguity reduction, 24\% sequential improvement, calibrated Bayesian intervals at low noise) and failures (locality over-regularization, Bayesian undercoverage at high noise).
+Both advance understanding of when ZNE works.
+Future work includes rigorous risk bounds, commutator-derived envelopes, circuit-family benchmarks, and eventual hardware evaluation.
 
 \begin{acknowledgments}
-We thank the quantum error mitigation community for discussions on identifiability and the role of physical constraints in ZNE.
+We thank the quantum error mitigation community for discussions on identifiability and physical constraints in ZNE.
 \end{acknowledgments}
 
 \bibliography{refs}

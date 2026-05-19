@@ -79,12 +79,15 @@ These are explicitly outside the scope of this project's current claims.
 
 Before submission, verify:
 
-- [ ] No hardware claims in abstract, body, or conclusion
-- [ ] No "universally superior" or "optimal" without qualification
-- [ ] No "defeat/overcome/circumvent lower bounds"
-- [ ] All negative results preserved (locality, Bayesian high-noise)
-- [ ] All experiments labeled "synthetic"
-- [ ] Sequential design λ<1 result labeled "non-standard ZNE"
-- [ ] Escape-hatch taxonomy labeled "research directions, not results"
-- [ ] Every major claim has a matching entry in this ledger
-- [ ] Limitations section is complete and honest
+- [x] No hardware claims in abstract, body, or conclusion
+- [x] No "universally superior" or "optimal" without qualification
+- [x] No "defeat/overcome/circumvent lower bounds"
+- [x] All negative results preserved (locality, Bayesian high-noise)
+- [x] All experiments labeled "synthetic"
+- [x] Sequential design λ<1 result labeled "non-standard ZNE"
+- [x] Escape-hatch taxonomy labeled "research directions, not results"
+- [x] Every major claim has a matching entry in this ledger
+- [x] Limitations section is complete and honest
+- [x] Central metric (ambiguity diameter) appears visually in manuscript
+- [x] Related work distinguishes identifiability analysis from bounded-ZNE engineering
+- [x] Paper explicitly framed as "framework paper with synthetic experiments"
