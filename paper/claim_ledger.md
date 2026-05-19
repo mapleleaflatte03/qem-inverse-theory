@@ -72,3 +72,19 @@ These are explicitly outside the scope of this project's current claims.
 | Peer-reviewed validation | No submission yet; draft is work-in-progress |
 | Bounded ZNE always reduces MSE | Projection reduces pointwise error, but constrained optimization is different |
 | Applicability to real noise channels | All experiments use synthetic/analytical responses |
+
+---
+
+## Claim Safety Checklist (v1.0 manuscript)
+
+Before submission, verify:
+
+- [ ] No hardware claims in abstract, body, or conclusion
+- [ ] No "universally superior" or "optimal" without qualification
+- [ ] No "defeat/overcome/circumvent lower bounds"
+- [ ] All negative results preserved (locality, Bayesian high-noise)
+- [ ] All experiments labeled "synthetic"
+- [ ] Sequential design λ<1 result labeled "non-standard ZNE"
+- [ ] Escape-hatch taxonomy labeled "research directions, not results"
+- [ ] Every major claim has a matching entry in this ledger
+- [ ] Limitations section is complete and honest
