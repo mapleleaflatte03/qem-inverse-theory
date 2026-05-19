@@ -8,3 +8,5 @@ from .estimators.chebyshev import fit_chebyshev_tikhonov_zne
 from .estimators.model_selection import select_by_aicc as select_model_aicc
 from .estimators.bayesian import fit_bayesian_zne_gp as fit_bayesian_zne
 from .estimators.bayesian import design_next_scale
+from .estimators.locality_aware import fit_locality_aware_zne
+from .theory.locality import estimate_observable_support, locality_envelope_proxy

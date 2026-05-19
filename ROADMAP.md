@@ -88,6 +88,21 @@ Deferred to v0.7+:
 - Circuit-family benchmarks
 - Non-Markovian noise
 
+## v0.8 — Operator/Locality-Aware Prototype
+
+Focus: heuristic support-size proxy, not rigorous theorem.
+
+- [ ] Support-size estimation from Pauli strings
+- [ ] Locality envelope proxy (heuristic, not commutator-derived)
+- [ ] Adaptive regularization from locality proxy
+- [ ] Experiment comparing standard vs locality-aware across support sizes
+- [ ] Explicitly labeled as heuristic, not theorem-backed
+
+Deferred to v0.9+:
+- Rigorous commutator envelope bounds
+- Structured lower-bound taxonomy
+- Circuit-family benchmarks (TFIM, VQE, QAOA)
+
 ---
 
 ## Success Criteria
