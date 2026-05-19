@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3-reviewer-readable-draft
+
+- Polished abstract into problem/results/scope structure
+- Converted contributions into numbered list
+- Strengthened related-work positioning against physically bounded ZNE
+- Clarified that this is identifiability/ambiguity analysis, not a new estimator
+- Added conservative figure captions stating what each result does and does not prove
+- Added anticipated reviewer concerns to paper/README.md
+- Smoke check and LaTeX build pass
+
 ## v0.2-manuscript-draft
 
 Expanded LaTeX manuscript to a readable 5-page draft.
