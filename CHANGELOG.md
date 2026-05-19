@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.8-locality-aware-prototype
+
+- Added locality-aware ZNE prototype (`theory/locality.py`, `estimators/locality_aware.py`)
+- Added Pauli support / Pauli weight utilities
+- Added heuristic locality envelope proxy
+- Added locality-aware Chebyshev regularization wrapper
+- Added experiment 11: support-size proxy comparison
+- Added top-level API exports: `fit_locality_aware_zne`, `estimate_observable_support`, `locality_envelope_proxy`
+- Negative result documented: current support-size proxy over-regularizes (-1% to -11% vs baseline)
+- Tests increased from 64 to 74
+- Known limitations: heuristic only, no commutator-derived bound, no theorem, synthetic only
+
 ## v0.7-bayesian-sequential-prototype
 
 - Added Bayesian GP hyperparameter optimization via marginal likelihood
