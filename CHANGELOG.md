@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.3-arxiv-submission-package
+
+- Rebuilt final arXiv source package after Proposition 3
+- Verified clean-room build: 4 pages, 327KB, 0 errors, 0 undefined citations
+- Confirmed Proposition 3 present in packaged main.tex
+- Confirmed no missing figures in package
+- Confirmed claim-safety checks pass
+- Final package: `dist/qem-inverse-theory-arxiv-source.zip` (57KB)
+- Recommended arXiv category: quant-ph primary, cs.LG optional secondary
+- Known limitation: technical report, not full-venue submission
+
 ## v1.3-theory-hardening
 
 - Added Proposition 3: finite-shot help/harm threshold

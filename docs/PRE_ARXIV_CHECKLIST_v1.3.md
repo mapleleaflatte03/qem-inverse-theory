@@ -1,8 +1,8 @@
-# Pre-arXiv Checklist: v1.3
+# Pre-arXiv Checklist: v1.3 (Final)
 
 ## Overall Verdict: PASS ✓
 
-Ready for submission as arXiv technical report.
+Ready for submission as arXiv technical report. Rerun after Proposition 3 addition confirmed.
 
 ## Checklist
 
@@ -42,8 +42,10 @@ Status: Compressed single paragraph. States contributions, results (positive and
 ## Source Package
 
 - Path: `dist/qem-inverse-theory-arxiv-source.zip`
-- Contents: main.tex, main.bbl, refs.bib, 4 PDF figures
-- Clean-room build: 4 pages, 0 errors
+- Size: 57KB
+- Contents: main.tex (with Proposition 3), main.bbl, refs.bib, 4 PDF figures
+- Clean-room build: 4 pages, 327KB PDF, 0 errors
+- Proposition 3 confirmed present in packaged main.tex
 - Status: Ready.
 
 ## Remaining Non-Blocking Improvements
